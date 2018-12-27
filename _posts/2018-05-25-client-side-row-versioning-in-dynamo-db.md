@@ -4,6 +4,14 @@ title: Client-side row versioning in DynamoDB
 tags: [distributed systems, design, versioning, AWS, DynamoDB, NoSQL, databases]
 ---
 
+_Edit 12/14/2018: This document is out of date! One of the great things about
+DynamoDB is that they are constantly improving it. They posted documentation on how to do
+row versioning in [Using Sort Keys for Version Control](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-sort-keys.html#bp-sort-keys-version-control).
+I'd also recommend watching [Advanced Design Patterns for DynamoDB](https://youtu.be/HaEPXoXVf2k?t=2296)
+from re:Invent 2018. The speaker recommends using the new [TransactWriteItems](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TransactWriteItems.html) operation to get rid of the complexity with ordering requests._
+
+----------------------
+
 Say your application needs to maintain the history of its records. 
 There are multiple ways of achieving this with [DynamoDB](https://aws.amazon.com/dynamodb/). 
 See [https://stackoverflow.com/a/24275045/1201381](https://stackoverflow.com/a/24275045/1201381) as an example solution.
