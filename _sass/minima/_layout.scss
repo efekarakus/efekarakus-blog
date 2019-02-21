@@ -254,3 +254,20 @@
     }
   }
 }
+
+span.label {
+  padding: 2px 3px 2px 3px;
+  border-radius: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+
+  &.g {
+    background-color: #33a02c;
+    color: #fff;
+  }
+
+  &.p {
+    background-color: #6a3d9a;
+    color: #fff;
+  }
+}
