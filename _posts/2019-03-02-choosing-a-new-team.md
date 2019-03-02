@@ -48,7 +48,7 @@ important decisions? What is the weekly or monthly growth rate of these metrics?
 * _How are engineers onboarded to the team? Is there a formalized mentorship or a set way of onboarding a new engineer?_ {% include label.html content="management" color="p" %}
 
 #### Openness
-* _Are engineers "one-man teams"? Working on silo-ed projects or do they deliver features together?_ {% include label.html content="management" color="p" %} {% include label.html content="engineering" color="g" %}
+* _Are engineers "one-person teams"? Do they deliver features together or work on silo-ed projects?_ {% include label.html content="management" color="p" %} {% include label.html content="engineering" color="g" %}
 * _Does the team know of each other's work? How do they know what are the priorities across and within the team?_ {% include label.html content="management" color="p" %} {% include label.html content="engineering" color="g" %}
 * _Is there some form of software delivery process followed by the team? Kanban, Scrum? Does the team do retrospectives/post-mortems?_ {% include label.html content="management" color="p" %} {% include label.html content="engineering" color="g" %}
 * _Does the team do any activities together? Like eating lunch?_ {% include label.html content="management" color="p" %} {% include label.html content="engineering" color="g" %}
