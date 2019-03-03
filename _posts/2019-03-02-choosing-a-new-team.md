@@ -10,7 +10,7 @@ tags: [career]
 I recently switched teams within Amazon. While searching for a good fit, I created and used a template to interview managers and engineers. I tried to compress important values that I learned over the past 3.5 years into the document. Although not every question is applicable to everyone, it provided a good starting point for discussion. It took me over 2 months to find what I'm hoping is a good fit. If you also have the luxury of time, I'd recommend taking it slow to relieve pressure. The exercise of searching for a new team also re-iterated the importance of networking. I'm sharing my template here, hoping that it would be helpful for others. 
 
 ## Why switch teams?
-There are several reasons why you might want to consider moving to a different team. The underlying theme here is about maximizing your learning. This is not an exhaustive list, they are strictly observations from friends and myself:
+There are several reasons why you might want to consider moving to a different team. The underlying theme here is about maximizing your learning. This is not an exhaustive list, they are strictly observations from friends and myself. **Lastly, I want to say that I loved my old team, and the reason I switched was because of Mastery and to keep challenging myself**:
 
 * **Toxic team environment**: You've team member(s) that're clearly detrimental to you or others. Management isn't willing to create a safe work environment. If you can't get along with the people, you won't have a good time at work.  
 * **Slow innovation pace**: Leadership that's indecisive on the vision of a product will result in its failure. Analysis paralysis is deadly and reversible decisions shoud be embraced by management _*_.
