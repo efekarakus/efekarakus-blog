@@ -2,8 +2,8 @@
  * Site header
  */
  .site-header {
-  //border-top: 5px solid $grey-color-dark;
-  border-bottom: 1px solid $grey-color-light;
+  border-top: 5px solid $brand-color;
+  //border-bottom: 1px solid $grey-color-light;
   min-height: $spacing-unit * 1.865;
 
   // Positioning context for the mobile navigation icon
@@ -193,7 +193,9 @@
   list-style: none;
 
   > li {
-    margin-bottom: $spacing-unit;
+    //margin-bottom: $spacing-unit;
+    display: flex;
+    justify-content: space-between;
   }
 }
 
@@ -204,7 +206,7 @@
 
 .post-link {
   display: block;
-  @include relative-font-size(1.5);
+  //@include relative-font-size(1.5);
 }
 
 
