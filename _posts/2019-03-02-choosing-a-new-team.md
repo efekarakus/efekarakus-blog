@@ -64,7 +64,7 @@ important decisions? What is the weekly or monthly growth rate of these metrics?
 
 #### People
 * _How senior are the engineers on the team? Is the team diverse in terms of experience? What's the average year of experience?_ {% include label.html content="management" color="p" %}
-* _How does the team share knowledge with each other? Are there folks that are actively reaching out to learn more (read, watch, share)?_ {% include label.html content="engineering" color="g" %} {% include label.html content="engineering" color="g" %}
+* _How does the team share knowledge with each other? Are there folks that are actively reaching out to learn more (read, watch, share)?_ {% include label.html content="engineering" color="g" %}
 * _Are there engineers that I can look up to? Will I be working/learning from principal engineers?_ {% include label.html content="management" color="p" %}
 * _Is the team diverse? Gender, country of origin, industry, career path? Are people forming cliques or do they hang out together?_ {% include label.html content="management" color="p" %}
 * _Are you learning things from your teammates? Are they smart? Is there at least one engineer that you look up to?_ {% include label.html content="engineering" color="g" %}
