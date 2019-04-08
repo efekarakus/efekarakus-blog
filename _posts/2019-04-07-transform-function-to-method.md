@@ -13,7 +13,7 @@ func (r *Reading) enrich() string { ... }
 ```
 
 ## Scenario
-A few days ago, I was working on transforming a [YAML](https://yaml.org/) file that represents a small web application into a [CloudFormation (CFN)](https://aws.amazon.com/cloudformation/aws-cloudformation-templates/) template.
+A few days ago, I worked on transforming a [YAML](https://yaml.org/) file that represents a small web application into a [CloudFormation (CFN)](https://aws.amazon.com/cloudformation/aws-cloudformation-templates/) template.
 
 This is roughly the code that I started with in `service/web.go`:
 ```go
@@ -51,11 +51,11 @@ What are some problems with this code?
 1. It _locks_ any customer of `service.CFNTemplate` to `service.Web`. This is related to the previous point, but this time the impact is upstream. The chain of functions that end up invoking `service.CFNTemplate` will need to be updated once we allow it to accept a more generic type.
 
 ## Solution
-To deal with both of the _extensibility_ problem, we can instead _transform the function to a method_.
+To deal with the _extensibility_ problem, we can instead [transform the function to a method]({% post_url 2019-04-07-transform-function-to-method %}):
 ```go
 func (w *Web) CFNTemplate() string { ... }
 ```
-Now, each new `service` type can implement its own `CFNTemplate` method. It won't need to be tied down to the `name`, `imageURL`, `cpu`, and `memory` fields.
+Now, each new `service` type can implement its own `CFNTemplate` method. It won't need to be tied down to the `Web` type.
 
 To deal with the _lock in_ problem, the caller can instead accept an interface. Here is an example:
 ```go
@@ -71,11 +71,11 @@ func deployStack(client *cloudformation.Cloudformation, srv CFNTemplater) {
   ...
 }
 ```
-This is pretty powerful and it reminds of the general security advice of granting [least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege). The function went from accepting a particular struct, like `*service.Web`, that will have a bunch of other methods to only accepting what it needs: the `CFNTemplate` method.
+This is pretty powerful and it reminds me of the general security advice of granting [least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege). The function went from accepting a particular struct, `*service.Web`, that has a bunch of other methods that `deployStack` doesn't care about to only accepting what it needs: the `CFNTemplate` method.
 
 ## Conclusion
 Here are some rules of thumb when you hesitate between creating a function or a method:
-1. If your function is accessing fields in your struct, consider transforming to a method.
-2. Replace any upstream functions that accepted the struct as a parameter with an interface of the method needed for flexibility. 
+1. If your function is accessing fields in your struct, instead consider transforming to a method.
+2. Replace any upstream function that accepted the struct as a parameter with an interface of the method needed for flexibility. 
 
 Categories [refactoring]({% post_url 2019-04-07-refactorings-in-golang %})
