@@ -6,10 +6,10 @@ categories: [refactoring, golang]
 
 ```go
 // before
-func enrichReading(r *Reading) string { ... }
+func EnrichReading(r *Reading) { ... }
 
 // after
-func (r *Reading) enrich() string { ... }
+func (r *Reading) Enrich() { ... }
 ```
 
 ## Scenario
@@ -50,7 +50,7 @@ What are some problems with this code?
 1. It's not _extensible_. I know that later on I'll have to parse other types of services that will be transformed to a CFN template. Since `service.CFNTemplate` only accepts a `*service.Web`, it can't work with other types. The impact here is within the `service` package.
 1. It _locks_ any customer of `service.CFNTemplate` to `service.Web`. This is related to the previous point, but this time the impact is upstream. The chain of functions that end up invoking `service.CFNTemplate` will need to be updated once we allow it to accept a more generic type.
 
-## Solution
+## Refactoring
 To deal with the _extensibility_ problem, we can instead [transform the function to a method]({% post_url 2019-04-07-transform-function-to-method %}):
 ```go
 func (w *Web) CFNTemplate() string { ... }
@@ -72,6 +72,11 @@ func deployStack(client *cloudformation.Cloudformation, srv CFNTemplater) {
 }
 ```
 This is pretty powerful and it reminds me of the general security advice of granting [least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege). The function went from accepting a particular struct, `*service.Web`, that has a bunch of other methods that `deployStack` doesn't care about to only accepting what it needs: the `CFNTemplate` method.
+
+## Mechanics
+The steps for this refactoring is similar to [Combine Functions into Class](https://refactoring.com/catalog/combineFunctionsIntoClass.html) from Martin Fowler's [refactoring book](https://martinfowler.com/books/refactoring.html).
+1. Create a new struct for the data that's common between functions.
+2. Transform the function to a method by adding the new struct as a receiver.
 
 ## Conclusion
 Here are some rules of thumb when you hesitate between creating a function or a method:
