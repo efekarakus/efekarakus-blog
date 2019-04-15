@@ -4,7 +4,7 @@ title: Refactorings in the Go Programming Language
 categories: [refactoring, golang]
 ---
 
-I'm a big fan of [Martin Fowler's refactoring book](https://refactoring.com/). It is essentially a large [catalog](https://refactoring.com/catalog/) of various refactorings with an example, motivation, and several how-to steps for each one. After reading the first edition a few years ago, I thought it made me a better software engineer. It developed better coding habits and I feel like I deliver results faster and with higher quality than before. I highly recommend other engineers to get themselves a copy.
+I'm a big fan of [Martin Fowler's refactoring book](https://refactoring.com/). It is essentially a large [catalog](https://refactoring.com/catalog/) of various refactorings with an example, motivation, and several how-to steps for each one. After reading the first edition a few years ago, I thought it made me a better software engineer. I developed better coding habits and I feel like I deliver results faster and with higher quality than before. I highly recommend other engineers to get themselves a copy.
 
 The first edition's examples were in Java and now the second edition is in JavaScript. I'll try to collect similar refactorings from my experiences but for the [Go](https://golang.org/) programming language.
 
