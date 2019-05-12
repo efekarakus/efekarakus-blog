@@ -20,7 +20,7 @@ Your architecture should be built around your application’s use-cases. The lay
 
 We can maintain two separate tables for the resources that need versioning.
 
-## Resource Table
+## [#](#-resource-table) Resource Table
 
 The `resource` table contains only the latest version for each item. 
 The [primary key](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey) of the table is just its partition key. 
@@ -34,7 +34,7 @@ We assume that any operation that updates a record, a new update, or a rollback 
 |:--------:|:--------|:-------------|
 | 1c5815b2 | 2       | some values  |
 
-## Resource History Table
+## [#](#-resource-history-table) Resource History Table
 
 The `resource-history` table contains every revision of the items. 
 It will have more storage, but can have a lower read capacity if you do not expect the users to retrieve older entries frequently. 
@@ -45,19 +45,19 @@ The main difference is that the primary key is a composite key `(partitionKey: h
 | 1c5815b2 | 2       | some values  |
 | 1c5815b2 | 1       |  some old values  |
 
-## Create
+## [#](#-create) Create
 ![Create](/assets/client-side-row-versioning-in-dynamodb/create.jpeg){: .center-image }
 
 Creating a new item involves first writing the item to the `resource-history` table, and then writing the same entry to the `resource` table.  
 If the first step fails, then nothing has been written to the tables and the user can safely issue another request.  
 If the second step fails, then there will be an extra record that’s in the `resource-history` table which won't be accessed by any user.
 
-## Read
+## [#](#-read) Read
 ![Read](/assets/client-side-row-versioning-in-dynamodb/read.jpeg){: .center-image }
 
 Retrieving the latest item requires us just to fetch the record with that `hash` from the `resource` table. We are guaranteed to have either one or no record for a given `hash`.
 
-## Update
+## [#](#-update) Update
 ![Update](/assets/client-side-row-versioning-in-dynamodb/update.jpeg){: .center-image }
 
 Updating an existing item requires us to first fetch the item’s latest version from the `resource` table, increment its version, and then write the new entry to both tables just like in CREATE.
@@ -65,12 +65,12 @@ The failure scenarios are similar to the CREATE operation. If the new entry is
 added only to the `resource-history` table, then when the user requests the same update operation,
 the previously created entry with the key `(hash, v2)` in `resource-history` will be replaced.
 
-## Delete
+## [#](#-delete) Delete
 ![Delete](/assets/client-side-row-versioning-in-dynamodb/delete.jpeg){: .center-image }
 
 Deleting an item requires us to only delete it from the main `resource` table.
 
-## Alternatives
+## [#](#-alternatives) Alternatives
 If you work with a single table and try to have immutable records, then the UPDATE operation is going to have a user experience trade-off.
  
 For example, if you decide to implement the [stackoverflow](https://stackoverflow.com/questions/24274570/how-can-i-implement-versioning-without-replacing-with-previous-record-in-dynamod/24275045#24275045) answer listed in the introduction, you will have two writes to the same table. Depending on the order you’ve chosen, if the second write operation fails, then the user will either see their item deleted or you’ll lose a historical record.

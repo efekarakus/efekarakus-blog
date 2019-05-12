@@ -13,7 +13,7 @@ type pixels int
 const padding pixels = 10
 ```
 
-## Scenario
+## [#](#-scenario) Scenario
 You need to define a variable that has a "hidden" unit attached to it. Here is an example based on the 
 [CSS translate function](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translate):
 ```go
@@ -33,7 +33,7 @@ I prefer the latter approach as comments should be used to
 describe things that aren't obvious from the code. In this scenario, we can make the unit
 obvious in the code so we should remove it out of the comments.
 
-## A Go alternative
+## [#](#-a-go-alternative) A Go alternative
 In Go we can have the luxury of keeping the variable name concise while maintaining the
 unit information.
 ```go
