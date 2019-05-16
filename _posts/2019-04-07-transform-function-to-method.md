@@ -12,7 +12,7 @@ func EnrichReading(r *Reading) { ... }
 func (r *Reading) Enrich() { ... }
 ```
 
-## [#](#-scenario) Scenario
+## Scenario [#](#scenario-)
 A few days ago, I worked on transforming a [YAML](https://yaml.org/) file that represents a small web application into a [CloudFormation (CFN)](https://aws.amazon.com/cloudformation/aws-cloudformation-templates/) template.
 
 This is roughly the code that I started with in `service/web.go`:
@@ -50,7 +50,7 @@ What are some problems with this code?
 1. It's not _extensible_. I know that later on I'll have to parse other types of services that will be transformed to a CFN template. Since `service.CFNTemplate` only accepts a `*service.Web`, it can't work with other types. The impact here is within the `service` package.
 1. It _locks_ any customer of `service.CFNTemplate` to `service.Web`. This is related to the previous point, but this time the impact is upstream. The chain of functions that end up invoking `service.CFNTemplate` will need to be updated once we allow it to accept a more generic type.
 
-## [#](#-refactoring) Refactoring
+## Refactoring [#](#refactoring-) 
 To deal with the _extensibility_ problem, we can instead [transform the function to a method]({% post_url 2019-04-07-transform-function-to-method %}):
 ```go
 func (w *Web) CFNTemplate() string { ... }
@@ -73,12 +73,12 @@ func deployStack(client *cloudformation.Cloudformation, srv CFNTemplater) {
 ```
 This is pretty powerful and it reminds me of the general security advice of granting [least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege). The function went from accepting a particular struct, `*service.Web`, that has a bunch of other methods that `deployStack` doesn't care about to only accepting what it needs: the `CFNTemplate` method.
 
-## [#](#-mechanics) Mechanics
+## Mechanics [#](#mechanics-)
 The steps for this refactoring is similar to [Combine Functions into Class](https://refactoring.com/catalog/combineFunctionsIntoClass.html) from Martin Fowler's [refactoring book](https://martinfowler.com/books/refactoring.html).
 1. Create a new struct for the data that's common between functions.
 2. Transform the function to a method by adding the new struct as a receiver.
 
-## [#](#-conclusion) Conclusion
+## Conclusion [#](#conclusion-)
 Here are some rules of thumb when you hesitate between creating a function or a method:
 1. If your function is accessing fields in your struct, instead consider transforming to a method.
 2. Replace any upstream function that accepted the struct as a parameter with an interface of the method needed for flexibility. 

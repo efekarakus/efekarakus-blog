@@ -9,7 +9,7 @@ tags: [career]
 
 I recently switched teams within Amazon. While searching for a good fit, I created and used a template to interview managers and engineers. I tried to compress important values that I learned over the past 3.5 years into the document. Although not every question is applicable to everyone, it provided a good starting point for discussion. It took me over 2 months to find what I'm hoping is a good fit. If you also have the luxury of time, I'd recommend taking it slow to relieve pressure. The exercise of searching for a new team also re-iterated the importance of networking. I'm sharing my template here, hoping that it would be helpful for others. 
 
-## [#](#-why-switch-teams) Why switch teams?
+## Why switch teams? [#](#why-switch-teams-) 
 There are several reasons why you might want to consider moving to a different team. The underlying theme here is about maximizing your learning. This is not an exhaustive list, they are strictly observations from friends and myself. **Lastly, I want to say that I loved my old team, and the reason I switched was because of Mastery and to keep challenging myself**:
 
 * **Toxic team environment**: You've team member(s) that're clearly detrimental to you or others. Management isn't willing to create a safe work environment. If you can't get along with the people, you won't have a good time at work.  
@@ -20,7 +20,7 @@ There are several reasons why you might want to consider moving to a different t
 
 _* As engineers we can help management get answers faster without degrading customer experience by investing in [operational excellence](https://aws.amazon.com/architecture/well-architected/#Operational_Excellence) and [feature flags](https://martinfowler.com/articles/feature-toggles.html)._
 
-## [#](#-criteria) Criteria
+## Criteria [#](#criteria-)
 
 These are the ideal traits I'm looking for in a team. Most of these are taken from [Edmund Lau's The Effective Engineer](https://www.amazon.com/Effective-Engineer-Engineering-Disproportionate-Meaningful/dp/0996128107/ref=sr_1_sc_1?ie=UTF8&qid=1550643410&sr=8-1-spell&keywords=the+effective+engineerin) book with slight tweaks for my interests:
 
@@ -33,7 +33,7 @@ processes, willingness to prototype to accelerate learning.
 * **Autonomy**: Have the freedom to choose what to work on so that I can challenge myself. Get the support needed while working on tasks.
 * **Mastery**: I'm looking to really dive deep into understanding a problem space, becoming an expert and pushing the boundary.
 
-## [#](#-questions-by-criteria) Questions by criteria
+## Questions by criteria [#](#questions-by-criteria-)
 Before talking with teams, I broke down questions by {% include label.html content="management" color="p" %} and 
 {% include label.html content="engineering" color="g" %}. 
 

@@ -17,7 +17,7 @@ I started programming in Go in March 2019, so some of these refactorings might c
 
 I'm hoping that this will be my small part in helping Go developers build programs that are designed to last.
 
-## [#](#-catalog) Catalog
+## Catalog [#](#catalog-)
 
 {% for category in site.categories %}
   {% if category[0] == "refactoring" %}

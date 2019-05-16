@@ -238,6 +238,16 @@
     @include media-query($on-laptop) {
       @include relative-font-size(1.75);
     }
+
+    a {
+      visibility: hidden;
+    }
+
+    &:hover {
+      a {
+        visibility: visible;
+      }
+    }
   }
 
   h3 {
@@ -245,6 +255,16 @@
 
     @include media-query($on-laptop) {
       @include relative-font-size(1.375);
+    }
+
+    a {
+      visibility: hidden;
+    }
+
+    &:hover {
+      a {
+        visibility: visible;
+      }
     }
   }
 
@@ -254,6 +274,16 @@
     @include media-query($on-laptop) {
       @include relative-font-size(1.125);
     }
+
+    a {
+      visibility: hidden;
+    }
+
+    &:hover {
+      a {
+        visibility: visible;
+      }
+    }
   }
 }
 
@@ -262,14 +292,16 @@ span.label {
   border-radius: 3px;
   margin-left: 3px;
   margin-right: 3px;
+  border-color: #000;
+  border-style: solid;
+  border-width: 1px;
+  display: inline-block;
 
   &.g {
-    background-color: #33a02c;
-    color: #fff;
+    background-color: #BAFFBF;
   }
 
   &.p {
-    background-color: #6a3d9a;
-    color: #fff;
+    background-color: #FFD4E4;
   }
 }
