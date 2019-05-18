@@ -8,7 +8,7 @@ I'm a big fan of [Martin Fowler's refactoring book](https://refactoring.com/). I
 
 The first edition's examples were in Java and now the second edition is in JavaScript. I'll try to collect similar refactorings from my experiences but for the [Go](https://golang.org/) programming language.
 
-I started programming in Go in March 2019, so some of these refactorings might change over time as I become more familiar with the language. However, since I want to become an expert in Go I thought it would be a good learning experience for me and hopefully others. So far, I don't think that Go is _that_ different than other popular languages but there are certain primitives, like [interfaces](https://golang.org/doc/effective_go.html#interfaces_and_types), that are powerful and provide different ways of doing these refactorings. I'll try to focus on only refactorings that leverage unique aspects of Go.
+I started programming in Go in March 2019, so some of these refactorings might change over time as I become more familiar with the language. So far, I don't think that Go is _that_ different than other popular languages but there are certain primitives, like [interfaces](https://golang.org/doc/effective_go.html#interfaces_and_types), that are powerful and provide different ways of doing these refactorings. I'll try to focus on only refactorings that leverage unique aspects of Go.
 
 > So we need to tell the rest of the world how good software should be written. Good software, composable software, software that is amenable to change, and show them how to do it, using Go. And this starts with you.
 > 
