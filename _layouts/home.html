@@ -14,6 +14,9 @@ layout: default
     <ul class="post-list">
       {%- for post in site.posts -%}
       <li>
+        {%- if post.favorite -%}
+        <span class="favorite">⭑ </span>
+        {%- endif -%}
         <a class="post-link" href="{{ post.url | relative_url }}">
           {{ post.title | escape }}
         </a>
@@ -25,8 +28,6 @@ layout: default
       </li>
       {%- endfor -%}
     </ul>
-
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
   {%- endif -%}
 
 </div>

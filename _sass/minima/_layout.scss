@@ -196,6 +196,16 @@
     //margin-bottom: $spacing-unit;
     display: flex;
     justify-content: space-between;
+    position: relative;
+
+    .favorite{
+      display: inline;
+      flex-basis: 20px;
+      position: absolute;
+      left: -24px;
+      line-height: 20px;
+      color: darken($brand-color, 15%);
+    }
   }
 }
 

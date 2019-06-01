@@ -2,6 +2,7 @@
 layout: post
 title: Send code reviews to junior engineers
 tags: [code reviews]
+favorite: true
 ---
 For a long time I didn't get the personal benefits of sending [code reviews](https://en.wikipedia.org/wiki/Code_review) to engineers who are less experienced than me. A more senior developer knows the system better, other design patterns, language best-practices, but what does a junior engineer bring to me? I know it sounds selfish and wrong, but I couldn't think of an answer.
 
