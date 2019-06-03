@@ -19,12 +19,12 @@ through better code then do that.
 ## Cookbook
 
 ### Describe things not obvious from the code
-[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) applies to comments as well.
-A good rule-of-thumb to follow in order to not repeat yourself is to **use different words than the entity described**[^1].
+[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) also applies to comments.
+A good rule-of-thumb to follow to not repeat yourself is to **use different words than the entity described**[^1].
 Code reviews are a great way to know whether your code needs a comment or a refactor[^3][^4].
 
 ### Complete abstractions 
-The tenet is best applied to a function or a method and the audience is for its users. Good things to cover are contracts, side-effects, exceptions, parameters, and return values. A good example is the [strings.SplitAfter](https://golang.org/pkg/strings/#SplitAfter) function:
+The tenet is best applied to a _public_ function or method and the target audience is its users. Good things to cover in the comments are: contracts, side-effects, exceptions, parameters, and return values. A good example is the [strings.SplitAfter](https://golang.org/pkg/strings/#SplitAfter) function:
 ```go
 // SplitAfter slices s into all substrings after each instance of sep and
 // returns a slice of those substrings.
@@ -38,19 +38,14 @@ The tenet is best applied to a function or a method and the audience is for its 
 // It is equivalent to SplitAfterN with a count of -1.
 func SplitAfter(s, sep string) []string
 ```
-This comment is good because there is no way for a user to know that if `sep` is not in `s` that the result
-would be just `[s]` as opposed to just `[]` as an example. You can't rename the parameters to convey that information.
+This comment is good because there is no way for a user to know that if `sep` is not in `s` then the result
+would be `[s]` as opposed to just `[]` as an example. You can't rename the parameters 
+or function either to convey that information.
 
 
 ## Further Reading
 [^1]: Chapters 12 & 13 from [A Philosophy of Software Design](https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201) by John Ousterhoust
-
-
 [^2]: [What is Software Design?](http://www.developerdotstar.com/printable/mag/articles/reeves_design.html) by Jack W. Reeves
-
-
 [^3]: [CodeAsDocumentation](https://www.martinfowler.com/bliki/CodeAsDocumentation.html) by Martin Fowler
-
-
 [^4]: [Send code reviews to junior engineers](https://www.efekarakus.com/2019/03/16/send-code-reviews-to-junior-engineers.html) by Efe Karakus
 
