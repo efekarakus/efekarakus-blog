@@ -15,22 +15,26 @@ is a work-in-progress, please send me any constructive feedback on how to improv
 * _Describe things not obvious from the code_. If you can remove your comments through better code then do that.
 * _Err on the side of commenting_. We are not always at our best. Writing clean code is difficult, when in doubt add a comment and seek feedback.
 * _Complete the abstractions_. If users need to read the implementation in order to use your public API then the abstraction is leaked. Use comments to avoid surprises for the caller.
+* _Update comments first_. A common worry with writing comments is that they'll go stale quickly. Develop
+the habit of updating comments first before changing the implementation.
 
 ## Cookbook
 
 ### Describe things not obvious from the code
 [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) also applies to comments. 
-Implementation comments (body of a function) can usually be replaced with better naming.
-If you're documenting a data structure, interface, function, a good rule-of-thumb to follow 
-is to **use different words than the entity described**[^1].
+Implementation comments (body of a function) can usually be removed with better variable and function names.
+A good rule-of-thumb to follow to provide new information is to **use different words than the entity described**[^1].
 
 ### Err on the side of commenting
 We build systems with the assumption that anything can fail, so we try to make [recovery](http://roc.cs.berkeley.edu/roc_overview.html) as easy as possible. We should adopt a similar mindset with our code quality. Not everything
 that we write will be clear, and if you think the code doesn't capture what's in your mind then add a comment[^1].
-If a code reviewer raises clarification questions, it's a good sign for refactoring or documentation[^2][^3].
+If a code reviewer raises clarification questions, it's a good sign to refactor or add documentation[^2][^3]. Don't leave
+the explanation in a code review comment, move it to within the code itself.
 
 ### Complete the abstractions 
-The tenet is best applied to a _public_ function or method and the target audience is its users. Good things to cover in the comments are: contracts, side-effects, exceptions, parameters, and return values. A good example is the [strings.SplitAfter](https://golang.org/pkg/strings/#SplitAfter) function:
+This tenet is best applied to the **public** API of your package. The audience for the comments are the users of the library. 
+
+For _functions or methods_, good things to cover in the comments are: contracts, side-effects, exceptions, parameters, and return values. A good example is the [strings.SplitAfter](https://golang.org/pkg/strings/#SplitAfter) function:
 ```go
 // SplitAfter slices s into all substrings after each instance of sep and
 // returns a slice of those substrings.
