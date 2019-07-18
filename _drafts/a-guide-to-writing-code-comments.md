@@ -24,6 +24,7 @@ the habit of updating comments first before changing the implementation.
 [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) also applies to comments. 
 Implementation comments (body of a function) can usually be removed with better variable and function names.
 A good rule-of-thumb to follow to provide new information is to **use different words than the entity described**[^1].
+Comments need to serve a purpose, if they don't add any value then remove them.
 
 ### Err on the side of commenting
 We build systems with the assumption that anything can fail, so we try to make [recovery](http://roc.cs.berkeley.edu/roc_overview.html) as easy as possible. We should adopt a similar mindset with our code quality. Not everything
@@ -32,9 +33,22 @@ If a code reviewer raises clarification questions, it's a good sign to refactor 
 the explanation in a code review comment, move it to within the code itself.
 
 ### Complete the abstractions 
-This tenet is best applied to the **public** API of your package. The audience for the comments are the users of the library. 
+While defining any **public** entity keep in my mind the end users. If users need to read the implementation of our code to figure out how to use a functionality then we have leaked our abstraction.
 
-For _functions or methods_, good things to cover in the comments are: contracts, side-effects, exceptions, parameters, and return values. A good example is the [strings.SplitAfter](https://golang.org/pkg/strings/#SplitAfter) function:
+#### Global Variables [#](#global-variables-)
+For an exported global constant or variable, explain _what_ it represents[^1][^5].
+Here is an [example](https://github.com/aws/aws-sdk-go/blob/67344c7d27430f17e1cb98f5f5ef38109ba317bd/service/firehose/errors.go#L45) inspired by the AWS Go SDK:
+```go
+// The service is unable to accept your requests due to internal errors. Back off and retry the operation. 
+// If you continue to see the exception, throughput limits for the delivery stream may have
+// been exceeded. For more information about limits and how to request an increase,
+// see Amazon Kinesis Data Firehose Limits (http://docs.aws.amazon.com/firehose/latest/dev/limits.html).
+const ErrCodeServiceUnavailableException = "ServiceUnavailableException"
+```
+
+#### Functions
+For _functions or methods_, good things to cover in the comments are: contracts, side-effects, exceptions, parameters, and return values. 
+A good example is the [strings.SplitAfter](https://golang.org/pkg/strings/#SplitAfter) function:
 ```go
 // SplitAfter slices s into all substrings after each instance of sep and
 // returns a slice of those substrings.
@@ -57,5 +71,5 @@ or function either to convey this information. Keep the user in mind while writi
 [^2]: [CodeAsDocumentation](https://www.martinfowler.com/bliki/CodeAsDocumentation.html) by Martin Fowler
 [^3]: [Send code reviews to junior engineers](https://www.efekarakus.com/2019/03/16/send-code-reviews-to-junior-engineers.html) by Efe Karakus
 [^4]: Go proverbs: [Documentation is for users.](https://www.youtube.com/watch?v=PAAkCSZUG1c&t=19m07s) by Rob Pike
-[^5]: [What is Software Design?](http://www.developerdotstar.com/printable/mag/articles/reeves_design.html) by Jack W. Reeves
+[^5]: [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html#Variable_Comments)
 
