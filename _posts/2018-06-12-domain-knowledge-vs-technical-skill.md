@@ -17,3 +17,6 @@ Is domain specific knowledge transferable then? It’s hard to say. There seem t
 
 In summary, are domain-modeling skills worth investing into? It seems to me that by mastering a domain, you’ll end up with a technically challenging problem because nobody else would have explored those waters anyway.
 On the other hand, if you are handed down a technical problem without an understanding of why, I find it hard to believe that you’ll get any purpose from it and know in which scenarios to apply those skills.
+
+*Edit: Dan Abramov recently [tweeted](https://twitter.com/dan_abramov/status/1151582235897802752) about something similar:*
+![Abramov](/assets/domain-knowledge-vs-technical-skill/abramov.png){: .center-image }

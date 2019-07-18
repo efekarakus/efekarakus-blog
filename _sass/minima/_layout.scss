@@ -212,6 +212,12 @@
 .post-meta {
   font-size: $small-font-size;
   color: $grey-color;
+
+  time {
+    span {
+      display: block;
+    }
+  }
 }
 
 .post-link {
