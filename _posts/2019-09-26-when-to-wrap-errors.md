@@ -72,14 +72,15 @@ Error: failed to read config from /Users/abc: failed to read file from /Users/ab
 ```
 
 
-We're repeating `/Users/abc/.settings.xml` 3 times in the error. 
-The programmer might not know that the error returned from `os.Open` contains the path of the config file, so we can rule out removing the last error. However, one of `"failed to read file from /Users/abc/.settings.xml"` [2] or `"failed to open /Users/abc/.settings.xml"` [3] is unnecessary.
+We're repeating the `/Users/abc/.settings.xml` path 3 times in the error. 
+The last path can't be avoided as it comes form `os.Open` so we can't get rid of that one. However, one of `"failed to read file from /Users/abc/.settings.xml"` [2] or `"failed to open /Users/abc/.settings.xml"` [3] is unnecessary.
 
 ## Recommendation [#](#recommendation-)
 
-Wrap only the errors coming from public function or methods. Otherwise, propagate them.
+**Wrap only the errors coming from public function or methods. Otherwise, propagate them.**
 
-By following this simple rule, we can guarantee that all the interesting points of our program (the public interfaces) have additional context while removing intermediate noise.
+This way we focus on the knowledge that's needed to perform a task, interactions with the public interfaces, have additional contexts.
+Otherwise, the error message focuses on the order needed to perform a task which is information leakage.
 
 In the example above, we'd modify [2] to just propagate the error since it's making a call to a package private function `readFile`. However, [1], [3], and [4] remain intact as they interact with `config.Read`,  `os.Open` and `ioutil.ReadAll` which are all public functions.
 
