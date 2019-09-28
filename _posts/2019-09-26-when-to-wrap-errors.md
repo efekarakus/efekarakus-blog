@@ -10,7 +10,19 @@ Only wrap errors returned from public functions or methods. Otherwise, propagate
 
 ## Problem statement [#](#problem-statement-)
 
-Go 1.13 introduced [error wrapping](https://golang.org/doc/go1.13#error_wrapping) to the standard library. Previously, you could use the [pkg/errors](https://godoc.org/github.com/pkg/errors) library to add additional context to an error.  Unfortunately, there is little guidance (that I could find) on when to wrap your errors besides wrapping them as soon as they occur:
+```go
+if err != nil {
+  return err
+}
+// or
+if err != nil {
+  return fmt.Errorf("my description: %w", err)
+}
+```
+
+You can add more context to your errors in Go by using `fmt.Errorf()` or a library like [pkg/errors](https://godoc.org/github.com/pkg/errors). Ideally, users should be able to fix their issue by reading the additional context printed, or there is a bug in the software. How can we wrap our errors such that we provide our users just the right amount of information?
+
+Unfortunately, there is little guidance (that I could find) on when to wrap your errors besides wrapping them as soon as they occur:
 
 > Minimise the number of sentinel error values in your program and convert errors to opaque errors by wrapping them with `errors.Wrap` as soon as they occur.
 
@@ -57,11 +69,11 @@ func readFile(path string) ([]byte, error) {
   } 
   defer f.Close()
  
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
+  b, err := ioutil.ReadAll(f)
+  if err != nil {
     return nil, fmt.Errorf("failed to read %s: %w", path, err) // [4]
-	}
-	return b, nil
+  }
+  return b, nil
 }
 ```
 
@@ -71,16 +83,16 @@ This approach wraps every possible error with additional context and results in 
 Error: failed to read config from /Users/abc: failed to read file from /Users/abc/.settings.xml: failed to open /Users/abc/.settings.xml: open /Users/abc/.settings.xml: no such file or directory
 ```
 
-
-We're repeating the `/Users/abc/.settings.xml` path 3 times in the error. 
-The last path can't be avoided as it comes form `os.Open` so we can't get rid of that one. However, one of `"failed to read file from /Users/abc/.settings.xml"` [2] or `"failed to open /Users/abc/.settings.xml"` [3] is unnecessary.
+We're repeating the `/Users/abc/.settings.xml` path 3 times in the error.  
+We can't omit the last path as it comes form `os.Open`. We can't omit the error from [1] either as it outlines the task that we're trying to perform.   
+However, one of `"failed to read file from /Users/abc/.settings.xml"` [2] or `"failed to open /Users/abc/.settings.xml"` [3] is unnecessary.
 
 ## Recommendation [#](#recommendation-)
 
 **Wrap only the errors coming from public function or methods. Otherwise, propagate them.**
 
-This way we focus on the knowledge that's needed to perform a task, interactions with the public interfaces, have additional contexts.
-Otherwise, the error message focuses on the order needed to perform a task which is information leakage.
+This way we focus on the knowledge that's needed to perform a task, the interactions with the public interfaces, have additional contexts.  
+Otherwise, the error message surfaces interactions that are implementation details, our package private functions, to perform a task which is information leakage to the reader.
 
 In the example above, we'd modify [2] to just propagate the error since it's making a call to a package private function `readFile`. However, [1], [3], and [4] remain intact as they interact with `config.Read`,  `os.Open` and `ioutil.ReadAll` which are all public functions.
 
@@ -103,11 +115,11 @@ func readFile(path string) ([]byte, error) {
   } 
   defer f.Close()
  
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
+  b, err := ioutil.ReadAll(f)
+  if err != nil {
     return nil, fmt.Errorf("failed to read %s: %w", path, err) // [4]
-	}
-	return b, nil
+  }
+  return b, nil
 }
 ```
 
