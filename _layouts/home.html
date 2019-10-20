@@ -15,7 +15,7 @@ layout: default
       {%- for post in site.posts -%}
       <li>
         {%- if post.favorite -%}
-        <span class="favorite">⭑ </span>
+        <span class="favorite">★ </span>
         {%- endif -%}
         <a class="post-link" href="{{ post.url | relative_url }}">
           {{ post.title | escape }}
