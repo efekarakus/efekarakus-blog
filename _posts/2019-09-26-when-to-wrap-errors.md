@@ -1,12 +1,16 @@
 ---
 layout: post
-title: When to wrap errors
+title: When to add context to errors
 categories: [golang]
 ---
 
+This post looks into when to add additional information to errors with `fmt.Errorf`, so that
+a **human** can make sense of the error. The human can be both a user of your software or you 
+as the developer.
+
 ## TL;DR [#](#tldr-)
 
-Only wrap errors returned from public functions or methods. Otherwise, propagate them.
+Add additional context to errors returned from public functions or methods. Otherwise, propagate them.
 
 ## Problem statement [#](#problem-statement-)
 
@@ -20,7 +24,7 @@ if err != nil {
 }
 ```
 
-You can add more context to your errors in Go by using `fmt.Errorf()` or a library like [pkg/errors](https://godoc.org/github.com/pkg/errors). Ideally, users should be able to fix their issue by reading the additional context printed, or there is a bug in the software. How can we wrap our errors such that we provide our users just the right amount of information?
+You can add more context to your errors in Go by using `fmt.Errorf` or a library like [pkg/errors](https://godoc.org/github.com/pkg/errors). Ideally, users should be able to fix their issue by reading the additional context printed, or there is a bug in the software. How can we wrap our errors such that we provide our users just the right amount of information?
 
 Unfortunately, there is little guidance (that I could find) on when to wrap your errors besides wrapping them as soon as they occur:
 
@@ -128,4 +132,3 @@ The error message now becomes:
 ```
 Error: failed to read config from /Users/abc: failed to open /Users/abc/.settings.xml: open /Users/abc/.settings.xml: no such file or directory
 ```
-
