@@ -111,19 +111,19 @@
   * Links
   */
  a {
-   color: $brand-color;
-   text-decoration: underline;
+   color: $link-color;
+   text-decoration: none;
+
+  code {
+     color: $code-color;
+     text-decoration: underline;
+   }
 
    &.post-link, &.site-title, &.page-link {
      text-decoration: none;
    }
  
-   &:visited {
-     color: darken($brand-color, 15%);
-   }
- 
    &:hover {
-     color: $text-color;
      text-decoration: underline;
    }
  
@@ -144,8 +144,6 @@
    color: $grey-color;
    border-left: 4px solid $grey-color-light;
    padding-left: $spacing-unit / 2;
-   @include relative-font-size(1.125);
-   letter-spacing: -1px;
    font-style: italic;
  
    > :last-child {
@@ -158,15 +156,20 @@
  /**
   * Code formatting
   */
- pre,
- code {
+ pre {
    @include relative-font-size(0.9375);
    border: 1px solid $grey-color-light;
    border-radius: 3px;
  }
  
- code {
-   padding: 1px 5px;
+ p, ol, ul {
+  code::after {
+   content: "`"
+  }
+
+  code::before {
+    content: "`"
+  }
  }
  
  pre {

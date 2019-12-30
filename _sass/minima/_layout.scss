@@ -254,16 +254,6 @@
     @include media-query($on-laptop) {
       @include relative-font-size(1.75);
     }
-
-    a {
-      visibility: hidden;
-    }
-
-    &:hover {
-      a {
-        visibility: visible;
-      }
-    }
   }
 
   h3 {
@@ -272,16 +262,6 @@
     @include media-query($on-laptop) {
       @include relative-font-size(1.375);
     }
-
-    a {
-      visibility: hidden;
-    }
-
-    &:hover {
-      a {
-        visibility: visible;
-      }
-    }
   }
 
   h4 {
@@ -289,16 +269,6 @@
 
     @include media-query($on-laptop) {
       @include relative-font-size(1.125);
-    }
-
-    a {
-      visibility: hidden;
-    }
-
-    &:hover {
-      a {
-        visibility: visible;
-      }
     }
   }
 }

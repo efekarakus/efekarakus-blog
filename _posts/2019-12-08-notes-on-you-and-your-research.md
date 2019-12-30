@@ -63,3 +63,5 @@ You don’t blame the system, you do the best that you can with what you got.
 [^7]: Family and friends is not a distraction for me and I hope I can remind myself of that frequently.
 
 [^8]: This can be a good time to study successes in the field at work.
+
+_Thanks to my fiancée, Meghna Polimera, for reviewing early drafts of this post!_
