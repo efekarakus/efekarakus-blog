@@ -1,30 +1,29 @@
 ---
 layout: post
-title: Working with Interfaces in Go
+title: Exposing interfaces in Go
 categories: [golang]
 ---
 
-[Interfaces](https://golang.org/doc/effective_go.html#interfaces_and_types) are my favorite feature in Go. An interface type represents a set of methods. Unlike most other languages, you don’t have to explicitly declare that a type *implements* an interface. A struct **`S`** implements the interface **`I`** implicitly if **`S`** defines the methods that **`I`** requires. 
+[Interfaces](https://golang.org/doc/effective_go.html#interfaces_and_types) are my favorite feature in Go. An interface type represents a set of methods. Unlike most other languages, you don’t have to explicitly declare that a type *implements* an interface. A struct `S` implements the interface `I` _implicitly_ if `S` defines the methods that `I` requires. 
 
-Writing good interfaces is difficult. It's easy to [pollute](https://rakyll.org/interface-pollution/) the "API" of a package by exposing broad or unnecessary interfaces. In this article, we'll explain the reasoning behind existing guidelines for interfaces and supplement them with examples from the standard library. We'll also observe other patterns used in the library that don't conform to these best practices.
+Writing good interfaces is difficult. It's easy to [pollute](https://rakyll.org/interface-pollution/) the "API" of a package by exposing broad or unnecessary interfaces. In this article, we'll explain the reasoning behind existing guidelines for interfaces and supplement them with examples from the standard library.
 
-#### [guideline] [The bigger the interface, the weaker the abstraction](https://www.youtube.com/watch?v=PAAkCSZUG1c&t=5m17s)
+#### **["The bigger the interface, the weaker the abstraction"](https://www.youtube.com/watch?v=PAAkCSZUG1c&t=5m17s)**
 
 It's unlikely that you'll be able to find multiple types that can implement a large interface. For that reason, ”interfaces with only one or two methods are common in Go code”. Instead of declaring large *public* interfaces, consider depending on or returning an explicit type. 
 
-The [`io.Reader` and `io.Writer`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/io/io.go#L77-L92) interfaces are the usual examples for powerful interfaces. 
+The [`io.Reader`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/io/io.go#L77-L92) and [`io.Writer`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/io/io.go#L77-L92) interfaces are the usual examples for powerful interfaces. 
 
 ```go
 type Reader interface {
 	Read(p []byte) (n int, err error)
 }
 ```
-
 After grepping the std lib, I found 81 structs across 30 packages that implement an `io.Reader`, and 99 methods or functions that consume it across 39 packages.
 
-#### [guideline] [Go interfaces *generally* belong in the package that uses values of the interface type, not the package that implements those values](https://github.com/golang/go/wiki/CodeReviewComments#interfaces)
+#### **["Go interfaces _generally_ belong in the package that uses values of the interface type, not the package that implements those values"](https://github.com/golang/go/wiki/CodeReviewComments#interfaces)**
 
-By defining the interface in the package that actually uses it, we can guarantee that we're not defining an unnecessary interface.
+By defining the interface in the package that actually uses it, we can let the client define the abstraction rather than the provider dictating the abstraction to all of its clients.
 
 An example is the [`io.Copy`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/io/io.go#L363) function. It accepts both the `Writer` and `Reader` interfaces as arguments defined in the same package. 
 
@@ -38,7 +37,7 @@ Another example from a different package is the[`color.Color`](https://github.co
 func (p Palette) Index(c Color) int
 ```
 
-#### [guideline] [If a type exists only to implement an interface and will never have exported methods beyond that interface, there is no need to export the type itself](https://golang.org/doc/effective_go.html#generality)
+#### **["If a type exists only to implement an interface and will never have exported methods beyond that interface, there is no need to export the type itself"](https://golang.org/doc/effective_go.html#generality)**
 
 The previous guideline from the [CodeReviewComments](https://github.com/golang/go/wiki/CodeReviewComments#interfaces) mentions that:
 
@@ -72,23 +71,23 @@ func newCipher(key []byte) (cipher.Block, error) {
 
 Note that in the previous example, the interface was defined in the producer package `rand`. However in this example, the returned type is defined in a different package `cipher`.
 
-**In my experience ...**
+**In my short experience ...**
 
-... this pattern is a lot more difficult to execute than the previous ones. In the early phases of development the needs of a consumer evolves quickly. Hence, it results in modifying the returned interface from the producer package. The interface slowly becomes too big to the point where returning a concrete type would have made more sense.
+... this pattern is a lot more difficult to execute than the previous ones. In the early phases of development the needs of a client package evolves quickly. Hence, it results in modifying the producer package. If the returned type is an interface, it  slowly becomes too big to the point where returning a concrete type would make more sense.
 
 My hypothesis for the mechanics of this pattern is:
 
 1. The interface returned needs to be small so that there can be multiple implementations.
-2. Hold off on returning an interface until you have multiple types in your package only implementing the interface. Multiple types gives confidence that you've the right interface.
+2. Hold off on returning an interface until you have multiple types in your package implementing only the interface. Multiple types with the same behavior signature gives confidence that you've the right abstraction.
 
-#### [observation] Consider creating a separate interfaces only package for namespacing and standardization
+#### **Consider creating a separate interfaces-only package for namespacing and standardization**
 
-Another common pattern in the standard library is having packages that contain only interfaces.
+This is **not** an official guideline from the Go team, it's just an observation as having packages that contain only interfaces is a common pattern in the standard library.
 
-An example is the [`hash.Hash`](https://golang.org/pkg/hash/) interface that’s implemented by the packages under the subdirectories of `hash/`  such as [`hash/crc32` ](https://golang.org/pkg/hash/crc32/) and [`hash/adler32`](https://golang.org/pkg/hash/adler32/). The hash package only exposes interfaces.
+An example is the [`hash.Hash`](https://golang.org/pkg/hash/) interface that’s implemented by the packages under the subdirectories of `hash/` such as [`hash/crc32` ](https://golang.org/pkg/hash/crc32/) and [`hash/adler32`](https://golang.org/pkg/hash/adler32/). The hash package only exposes interfaces.
 
 ```go
-package "hash"
+package hash
 
 type Hash interface {
   ...
@@ -113,7 +112,7 @@ I suspect the benefits of moving interfaces to a separate package instead of exp
 Another package with only interfaces is [`encoding`](https://golang.org/pkg/encoding/).
 
 ```go
-package "encoding"
+package encoding
 
 type BinaryMarshaler interface {
     MarshalBinary() (data []byte, err error)
@@ -132,9 +131,27 @@ type TextUnmarshaler interface {
 }
 ```
 
-Unlike `hash`, there are no functions in the std lib that accept or return an `encoding` interface. So why is it exposed? I believe it's because they want to hint to developers a standard method signature for (un)marshalling a binary into an object. Existing packages that test if a value implements the `encoding.BinaryUnmarshaler` interface won't need to change their implementation if a new struct implements the interface.
+There are many structs in the std lib that implement the `encoding` interfaces. However, unlike `hash` which is consumed by the packages under `crypto/`, there are no functions in the std lib that accept or return an `encoding` interface. 
 
-It’s worth noting that this pattern is not followed with the `Resetter` interface in [compress/zlib](https://golang.org/pkg/compress/zlib/#Resetter) and [compress/flate](https://golang.org/pkg/compress/flate/#Resetter) packages as it's duplicated in both packages. However, this seems to be controversial even within Go maintainers [see CR comment#27](https://codereview.appspot.com/97140043#msg27) for this change.
+So why is it exposed?  
 
-**Finally, private interfaces don't have to deal with these considerations as they're not exposed.** We can have larger interfaces such as [`gobType`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/encoding/gob/type.go#L167-L173) from the `encoding/gob` package without worrying about its contents. Interfaces can be duplicated across packages such as `timeout` in both the [`os`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/os/error.go#L35-L37) and [`net`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/net/net.go#L494-L496) packages without thinking about placing them in a separate package. 
+I believe it's because they want to hint to developers a standard method signature for (un)marshalling a binary into an object. Existing packages that test if a value implements the `encoding.BinaryMarshaler` interface won't need to change their implementation if a new struct implements the interface.
+```go
+if m, ok := v.(encoding.BinaryMarshaler); ok {
+    return m.MarshalBinary()
+}
+```
 
+It’s worth noting that this pattern is not followed with the `Resetter` interface in [compress/zlib](https://golang.org/pkg/compress/zlib/#Resetter) and [compress/flate](https://golang.org/pkg/compress/flate/#Resetter) packages as it's duplicated in both packages. However, this appears to be a point of discussion even with Go maintainers ([see CR comment#27](https://codereview.appspot.com/97140043#msg27)).
+
+#### **Finally, private interfaces don't have to deal with these considerations as they're not exposed.**
+
+We can have larger interfaces such as [`gobType`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/encoding/gob/type.go#L167-L173) from the `encoding/gob` package without worrying about its contents. Interfaces can be duplicated across packages, such as the `timeout` interface that exists in both the [`os`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/os/error.go#L35-L37) and [`net`](https://github.com/golang/go/blob/c170b14c2c1cfb2fd853a37add92a82fd6eb4318/src/net/net.go#L494-L496) packages, without thinking about placing them in a separate location. 
+
+#### **Takeaways**
+
+Defer, defer, and defer writing an interface to when you have a better understanding of the abstraction needed.  
+
+A good signal as a producer is when you have multiple types that implements the same method signatures. Then you can refactor and return an interface. As a consumer keep your interfaces tiny so that multiple types can implement it.
+
+_Thanks to Nick Fischer for reviewing early drafts of this post!_
