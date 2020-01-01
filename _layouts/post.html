@@ -8,10 +8,7 @@ layout: default
     <p class="post-meta">
       <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        {%- if page.last_modified_at != page.date -%}
-          <span>Last modified at: {{ page.last_modified_at | date: date_format }}</span>
-        {%- endif -%}
-          <span>Published at: {{ page.date | date: date_format }} </span>
+        <span>Published: {{ page.date | date: date_format }} </span>
       </time>
       {%- if page.author -%}
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author | escape }}</span></span>
@@ -20,7 +17,16 @@ layout: default
 
   <div class="post-content e-content" itemprop="articleBody">
     {{ content }}
+    {%- if page.last_modified_at != page.date -%}
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        <span>Last modified: {{ page.last_modified_at | date: date_format }}</span>
+      </time>
+    </p>
+    {%- endif -%}
   </div>
+
+  
 
   {%- if site.disqus.shortname -%}
     {%- include disqus_comments.html -%}
