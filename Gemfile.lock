@@ -51,7 +51,7 @@ GEM
       jekyll (~> 3.5)
       jekyll-feed (~> 0.9)
       jekyll-seo-tag (~> 2.1)
-    nokogiri (1.10.4)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
@@ -80,7 +80,7 @@ DEPENDENCIES
   jekyll-feed (~> 0.6)
   jekyll-last-modified-at
   minima (~> 2.0)
-  nokogiri
+  nokogiri (>= 1.10.8)
   ruby-readability (~> 0.7.0)
   tzinfo-data
 
