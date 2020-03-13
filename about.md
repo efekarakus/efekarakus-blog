@@ -6,9 +6,8 @@ permalink: /about/
 
 👋 Hi! I'm [@efekarakus](https://twitter.com/efekarakus). A software developer at [Amazon Web Services](https://aws.amazon.com/) from Istanbul, Turkey. 
 
-I've been at Amazon since August 2015, and I recently joined the developer experience team for [Amazon ECS](https://aws.amazon.com/ecs/).
-My interests seem to shift frequently, but I mostly enjoy thinking and learning about 
-software development practices, large scale distributed systems, and data visualization. Not just a code 🐒.
+I joined Amazon in August, 2015, and I'm currently working on making using [Amazon ECS](https://aws.amazon.com/ecs/) delightful with a new [CLI](https://github.com/aws/amazon-ecs-cli-v2).
+I enjoy thinking, learning, and teaching about the mechanics and the human-side of software development. Not just a code 🐒.
 
 
 
