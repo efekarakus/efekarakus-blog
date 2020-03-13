@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Minimizing architectural debt against a deadline
+title: Minimizing architectural debt against a looming deadline
 tags: [technical debt]
 ---
 
