@@ -8,7 +8,23 @@ layout: default
   {%- endif -%}
 
   {{ content }}
-
+      <div class="subscription">
+        <div class="subscription-content">
+          If you enjoyed some of these posts, you can subscribe to the newsletter to get notified
+          for any new writing!
+          <form
+            action="https://buttondown.email/api/emails/embed-subscribe/efekarakus"
+            method="post"
+            target="popupwindow"
+            onsubmit="window.open('https://buttondown.email/efekarakus', 'popupwindow')"
+            class="embeddable-buttondown-form"
+          >
+            <input class="email" type="email" name="email" id="bd-email" placeholder="Email address">
+            <input type="hidden" value="1" name="embed"></input>
+            <input class="subscribe" type="submit" value="Subscribe"></input>
+          </form>
+      </div>
+    </div>
   {%- if site.posts.size > 0 -%}
     <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
     <ul class="post-list">

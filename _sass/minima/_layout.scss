@@ -291,3 +291,49 @@ span.label {
     background-color: #FFD4E4;
   }
 }
+
+.subscription {
+  margin-bottom: $spacing-unit / 2;
+  input.email {
+    width: 300px;
+    padding: 12px;
+    margin: 6px 0 4px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    color: #000;
+    line-height: normal;
+    box-sizing: border-box;
+    border-radius: 2px;
+    font-size: $base-font-size;
+  }
+  input.subscribe {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    padding: 12px;
+    margin: 6px 0 4px;
+    border-width: 0;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: $base-font-size;
+    background-color: transparent;
+    border-radius: 0;
+    color: $link-color;
+    border-width: 1px;
+    border-style: solid;
+    border-color: $link-color;
+    -webkit-transition: 0.1s background-color linear, 0.1s color linear;
+    -moz-transition: 0.1s background-color linear, 0.1s color linear;
+    -o-transition: 0.1s background-color linear, 0.1s color linear;
+    transition: 0.1s background-color linear, 0.1s color linear;
+    
+    &:hover {
+      background-color: $link-color;
+      color: white;
+    }
+  }
+}
