@@ -101,14 +101,15 @@ e.must(yaml_sequence_start_event_initialize(&e.event, []byte(node.Anchor), []byt
 
 #### Takeaways
 While trying to figure out what happens when you (un)marshal a CFN template,
-I found a few approaches pretty effective.
+I found reading the code and visualizing the data helped me form hypotheses and
+the debugger test them.
 
-1. **Start from the entry point**.  
-   Glancing at `yaml.Unmarshal`, I found out about the `yaml.Node` data structure and the
+1. **Read the code**.  
+   Glancing at `yaml.Unmarshal`, I learned about the `yaml.Node` data structure and the
 	 [d.unmarshal](https://github.com/go-yaml/yaml/blob/2ff61e1afc866138abf1a8adf3cc89721090ac31/decode.go#L475) method that holds the main decoding logic.
 2. **Visualize the data**.  
-   After printing the AST, I made the hypothesis that named sequences and maps are rendered as a pair of nodes.
-	 That must mean that somewhere in the code there is a "+1". A quick search, led me to confirm my
+   After printing the AST, I observed that named sequences and maps seemed to be rendered as a pair of nodes.
+	 So I searched in the codebase for "+1", that led me to confirm my
 	 hypothesis and understand how maps are unmarshaled.
 3. **Use the debugger**.  
    The debugger is extremely helpful to figure out which code path is taken during execution and what the variables in the scope hold.
