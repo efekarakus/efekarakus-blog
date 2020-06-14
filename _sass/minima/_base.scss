@@ -57,7 +57,12 @@
    display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
  }
  
- 
+ /**
+  * Content
+  */
+ p, pre, ul, ol {
+   margin: 1.25rem;
+ }
  
  /**
   * Images
@@ -102,11 +107,32 @@
   * Headings
   */
  h1, h2, h3, h4, h5, h6 {
-   font-weight: $base-font-weight;
+   font-weight: 600;
  }
  
- 
- 
+h1, h2, h3, h4 {
+  margin: 1.25rem 0 1.25rem;
+  padding: 0;
+  color: #202224;
+}
+
+h3, h4 {
+  margin: 1.25rem 0.3125rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1;
+} 
+
  /**
   * Links
   */
@@ -158,22 +184,12 @@
   */
  pre {
    @include relative-font-size(0.9375);
-   border: 1px solid $grey-color-light;
-   border-radius: 3px;
+   border-radius: 0.3125rem;
  }
  
- p, ol, ul {
-  code::after {
-   content: "`"
-  }
-
-  code::before {
-    content: "`"
-  }
- }
  
  pre {
-   padding: 8px 12px;
+   padding: 0.625rem;
    overflow-x: auto;
  
    > code {
