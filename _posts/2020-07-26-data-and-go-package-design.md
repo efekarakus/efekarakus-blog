@@ -12,7 +12,7 @@ which it hides from all others. **Its interface or definition was chosen to reve
 \- David Parnas [[2]](#2)
 
 
-This post explores how to make Go packages more flexible by showing how to vend data types from packages.
+This post explores design patterns around _data_ types to make our Go packages more flexible. Interfaces are out of scope.
 
 ### Consider multiple named return values over small structs
  
@@ -69,11 +69,11 @@ package gitrepo
 // github.Auth and github.Repository are not owned by this pkg.
 func (c *Client) Repository(auth github.Auth, name string) (github.Repository, error) 
 ```
-The `Repository` method will struggle to evolve if it wants to support additional functionality in a backwards compatible manner.
+The `Repository` method will struggle to evolve if it wants to support additional functionality in a backwards compatible manner.  
 For example, we cannot augment the `Repository` method to also work with one-time passwords (OTP) since `gitrepo` does not own the `github.Auth` type. It cannot add the optional `OTP` field to the struct. Instead, we'll have to create a new method `RepositoryWithOTP` to be able to handle the feature request. On the other hand, if we define and accept our own `Auth` type then the optional field can be added safely without introducing a breaking change.
 
 ```go
-package repo
+package gitrepo
 
 type Auth struct {
   Username string
@@ -92,7 +92,7 @@ A reader knows that the package uses and only works with the `github` dependency
 `gitrepo.Repository` type then internally the `Repository` method can choose to either use a `github.Repository` or `gitlab.Repository`.
 
 ```go
-package repo
+package gitrepo
 
 type Auth struct {
   Username string
@@ -109,8 +109,17 @@ func (c *Client) Repository(auth Auth, name string) (Repository, error) {
   // Or a gitlab.Repository.
 }
 ```
+
 ### Takeaways
 
+While designing packages with methods, consider how your consumers can swap out
+your package. Use multiple return values instead of returning a small struct to make
+the package replacable. When the struct makes sense to remain under the namespace,
+consider providing multiple types that satisfy the same contract in the same namespace.  
+Packages can depend on lower level packages to perform a task 
+but should vend their own data abstractions so that they can change over time. A higher
+level package can be then designed to do the necessary transformations between data types and tie
+packages together.
 
 ### Further reading
 
