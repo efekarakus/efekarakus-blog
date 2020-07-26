@@ -12,9 +12,9 @@ which it hides from all others. **Its interface or definition was chosen to reve
 \- David Parnas [[2]](#2)
 
 
-This post explores how to make Go packages more flexible by exploring how to vend data types from packages.
+This post explores how to make Go packages more flexible by showing how to vend data types from packages.
 
-### Consider named return values over small structs
+### Consider multiple named return values over small structs
  
 A `struct` is an aggregate data type with zero or more fields. If a method is returning a small struct composed of fields with std library types, changing its signature to use named return values will make it more flexible. 
 
@@ -59,15 +59,18 @@ type Auth interface {
 By grouping several types that satisfy the same interface in the `gitrepo` package we increased its flexibility.
 
 ### Consider only accepting and returning data types defined in your package
-Following the advice from Liskov and Parnas, ensure that your package's public API can evolve by only accepting and returning data types defined within them. Consider the following method defined in the `gitrepo` package:
+Following the advice from Liskov and Parnas, ensure that your package's public API can evolve by _not_ consuming or exposing dependency data types with the exception of the std library.   
+
+To illustrate, let's take a look at the following method in the `gitrepo` package:
 
 ```go
 package gitrepo
 
+// github.Auth and github.Repository are not owned by this pkg.
 func (c *Client) Repository(auth github.Auth, name string) (github.Repository, error) 
 ```
 The `Repository` method will struggle to evolve if it wants to support additional functionality in a backwards compatible manner.
-For example, if want the `Repository` method to also work with one-time passwords (OTP), since `gitrepo` does not own the `github.Auth` type it cannot add the optional `OTP` field to it. Instead, we'll have to create a new method `RepositoryWithOTP` to be able to handle the feature request. On the other hand, if we define and accept a `gitrepo.Auth` type then the field can be added safely and marked as optional without introducing a breaking change.
+For example, we cannot augment the `Repository` method to also work with one-time passwords (OTP) since `gitrepo` does not own the `github.Auth` type. It cannot add the optional `OTP` field to the struct. Instead, we'll have to create a new method `RepositoryWithOTP` to be able to handle the feature request. On the other hand, if we define and accept our own `Auth` type then the optional field can be added safely without introducing a breaking change.
 
 ```go
 package repo
@@ -86,7 +89,7 @@ func (c *Client) Repository(auth Auth, name string) (github.Repository, error)
 
 The `Repository` method still outputs a `github.Repository` type which leaks the internals of the package. 
 A reader knows that the package uses and only works with the `github` dependency. Instead, if we define our own
-`gitrepo.Repository` type then internally the `Repository` method can choose to either output a `github.Repository` or `gitlab.Repository`.
+`gitrepo.Repository` type then internally the `Repository` method can choose to either use a `github.Repository` or `gitlab.Repository`.
 
 ```go
 package repo
@@ -106,6 +109,8 @@ func (c *Client) Repository(auth Auth, name string) (Repository, error) {
   // Or a gitlab.Repository.
 }
 ```
+### Takeaways
+
 
 ### Further reading
 
