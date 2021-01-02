@@ -2,6 +2,7 @@
 layout: post
 title: Technical debt
 tags: [technical debt]
+favorite: true
 ---
 
 > None of it is new; but sensible old ideas need to be repeated or silly new ones will get all the attention.   
