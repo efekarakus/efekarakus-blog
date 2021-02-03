@@ -261,6 +261,16 @@ span.label {
   &.p {
     background-color: #FFD4E4;
   }
+
+  &.t {
+    padding-top: 0.5px;
+    padding-bottom: 0.5px;
+    border-color: #aaa;
+    background-color: #eee;
+    margin-top: 2px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 }
 
 .subscription {
