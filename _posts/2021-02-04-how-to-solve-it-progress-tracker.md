@@ -45,7 +45,7 @@ Yes. Here are few [low-fidelity mocks](https://gist.github.com/efekarakus/fe4afc
 Here are some rough requirement ideas:
 1. <span class="label t">transparency</span> Indicate the operation is still _in progress_ and not stuck.
 2. <span class="label t">transparency</span> Get an understanding of _what_ is being performed so that users gain confidence the right operations are happening. 
-3. <span class="label t">educate</span> Explain _why_ a resource is being mutated.
+3. <span class="label t">education</span> Explain _why_ a resource is being mutated.
 As one of Copilot’s goals is to also explain the basic building blocks of AWS.
 
 #### _Are the conditions sufficient to determine the unknown_?
