@@ -23,7 +23,7 @@ There are several disadvantages for _managed_ platforms:
   {: .after-blockquote}
 
 Software is full of oppositions and some of the weaknesses of platforms are also its strengths:
-* **Hiding undesirable properties**. Since components need to be re-usable across a wide range of clients, successful ones grow to have extremely large number of knobs[[6]](#6). Platforms instead provide an opinionated view of how applications should be built and can hide properties that don’t fit their philosophy. Clients that share the same beliefs have a delightful experience using the product.
+* **Hiding undesirable properties**. Since components need to be re-usable across a wide range of clients, successful ones grow to have extremely large number of knobs [[6]](#6). Instead, platforms provide an opinionated view of how applications should be built and can hide properties that don’t fit their philosophy. Clients that share the same beliefs have a delightful experience using the product.
 
 * **Consistency**.    
    > If you take 10 components off the shelf, you are putting 10 world views together, and the result will be a mess. No one is responsible for design integrity, and only the poor client is responsible for the whole thing working together.
@@ -44,25 +44,27 @@ The advantage of a client-side platform over a managed one is that there is an o
 <span class="center-image" style="text-align: center;"><i>Figure 2: User journey for client-side platforms</i></span>
 {: .tab-once}
 
-The developer experience starts off just like a managed platform, but once a client hits a functionality limit, they can drop down a level of abstraction and manage the exposed components themselves.  Therefore, clients can start with a great experience and over time end up at the same place as if they never used a platform to begin with. For example, Copilot manages all AWS resources via AWS CloudFormation stacks. If the properties surfaced by Copilot are not sufficient, clients have access to the CloudFormation stacks and templates to manage the resources on their own.
+The developer experience starts off just like a managed platform, but once a client hits a functionality limit, they can drop down a level of abstraction and manage the exposed components themselves.  Therefore, clients can start with a great experience and over time end up at the same place as if they never used a platform to begin with. For example, Copilot manages all AWS resources via AWS CloudFormation stacks. If the properties surfaced by Copilot are not sufficient, clients have access to the created CloudFormation stacks and templates to manage the resources on their own.
 
-The gain in flexibility comes at the cost of the following benefits provided by managed platforms:
+This gain in flexibility comes at the cost of the following benefits provided by managed platforms:
 * **Operations**. Since resources are created in the client’s account, the clients become responsible for the scalability, reliability, and resiliency of their applications. For example, if there is a surge in traffic, the client needs to configure autoscaling settings appropriately instead of leaving it to the platform to figure out how to scale their application. This means the interface for client-side platforms have to be more complicated than managed ones. 
 
 *  **Lack of information hiding**. The platform is usually built with assumptions about the underlying data model. Exposing the internal layers means that clients can modify them and break those assumptions. For example, if a customer of Copilot manually removed the `"aws-copilot-*"` tags from their resources then Copilot won’t be able to retrieve information about them. However, clients aren’t aware of this dependency and it can be a source of confusion for why the platform isn’t behaving as expected. Exposing the internals of the system can be a source of instability for the platform.
 
-## Design guidelines for client-side platforms
-> A surprisingly hard problem is how to design a system that is “intentionally leaky” — where you can provide higher level functionality while still exposing internal layers that allow someone building on top of your component direct access to those lower layers.
-> \- Terry Crowley
+## Design challenges
+> A surprisingly hard problem is how to design a system that is “intentionally leaky” — where you can provide higher level functionality while still exposing internal layers that allow someone building on top of your component direct access to those lower layers.   
+> \- Terry Crowley [[7]](#7)
 
 
-Client-side platforms are solutions that should be “leaky by design” [[7]](#7). Ideally, the user journey shouldn’t be like in figure 2. where once the clients hits the limits of the platform they have to deal with a very stiff learning curve and drop in ease of use. 
+Client-side platforms are solutions that should be “leaky by design” [[7]](#7). In figure 2. ![](/assets/client-side-platforms-thoughts/client-platform-cliff.svg){: .sparkline}, clients that hit the limits of the platform have to face a very steep <span style="color: #c92a2a;">learning curve</span> to use the next level of abstraction. If the platform is difficult to extend, then it will lead to poor user retention.  Instead, we'd like to provide a "staircase" experience ![](/assets/client-side-platforms-thoughts/client-platform-steps.svg){: .sparkline}, where clients are given several _extension points_ that expose just enough of the underlying components such that adapting functionality isn't too difficult. 
 
-![client-side-platform](/assets/client-side-platforms-thoughts/client-platform-step-ladder.svg){: .center-image }
-<span class="center-image" style="text-align: center;"><i>Figure 3: Ideal user journey for platforms</i></span>
-{: .tab-once}
+There are several challenges with achieving the staircase experience. First, we have to figure out how to provide a gradual ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} developer experience as clients need more functionality from the platform. Second, we need to decide where is the limit of the platform such that vended functionality stops and extension points begin ![](/assets/client-side-platforms-thoughts/staircase.svg){: .sparkline}. Finally, we have to figure out where and how to exactly expose these low-level capabilities to clients.
 
-We need a more gradual path for the customers where they can slowly peel the onion and still use .
+## Design guidelines
+
+Operations and performance. Do not hide power.
+
+Features in terms of additional usecases supported is where you decide where your limit should be.
 
 
 ## Further material
