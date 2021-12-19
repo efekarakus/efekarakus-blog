@@ -36,8 +36,7 @@
    flex-direction: column;
  }
  
- 
- 
+
  /**
   * Set `margin-bottom` to maintain vertical rhythm
   */
@@ -48,8 +47,18 @@
    margin-bottom: $spacing-unit / 2;
  }
  
+ blockquote.inline-blockquote {
+   margin-bottom: $spacing-unit / 6;
+ }
  
- 
+p.after-blockquote {
+  margin-top: $spacing-unit / 6;
+}
+
+li > p {
+  margin-left: 0;
+}
+
  /**
   * `main` element
   */
@@ -91,6 +100,10 @@
   * Lists
   */
  ul, ol {
+   margin-left: $spacing-unit;
+ }
+
+ .tab-once {
    margin-left: $spacing-unit;
  }
  
