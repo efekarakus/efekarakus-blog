@@ -4,7 +4,7 @@ title: 'Thoughts on client-side platforms'
 tags: [design]
 ---
 
-_This post explains the motivation for client-side platforms by situating it against components and managed platforms, describes challenges with building a system that's "leaky by design", and then lists design guidelines to solve these challenges._ 
+_This post explains the motivation for client-side platforms by situating it against components and managed platforms, describes challenges with building a system that's "leaky by design", and then lists design guidelines to tackle these challenges._ 
 
 A platform is a collection of components on top of which many people can build programs, usually application programs [[1]](#1). AWS is well known [[2]](#2)[[3]](#3) for not building platforms, and instead delivering big components that can be composed together to build bespoke solutions:
 > I think a couple players then decided they need to really get going and they just chose the wrong abstraction to build. They built too high in the stack as opposed to these building blocks like we built, that allowed developers to stitch them together however they saw fit.
@@ -58,23 +58,28 @@ This gain in flexibility comes at the cost of the following benefits provided by
 > A surprisingly hard problem is how to design a system that is “intentionally leaky” — where you can provide higher level functionality while still exposing internal layers that allow someone building on top of your component direct access to those lower layers.   
 > \- Terry Crowley [[7]](#7)
 
+> The onion principle: doing a simple task is simple, and if it’s less simple, you peel one layer off the onion. The more layers you peel off, the more you cry. — Bjarne Stroustrup
 
-Client-side platforms are solutions that should be “leaky by design” [[7]](#7). In figure 2. ![](/assets/client-side-platforms-thoughts/client-platform-cliff.svg){: .sparkline}, clients that hit the limits of the platform have to <span style="color: #c92a2a;">ramp up on a lot of expertise</span> to use the next level of abstraction. If the platform is difficult to extend, then it will lead to poor user retention.  Instead, we'd like to provide a "staircase" experience ![](/assets/client-side-platforms-thoughts/client-platform-steps.svg){: .sparkline}, where clients are given several _extension points_ that expose just enough of the underlying components such that adapting functionality isn't too difficult. 
 
-There are several challenges with achieving the staircase experience. First, we have to figure out how to provide a gradual ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} developer experience as clients need more functionality from the platform. Second, we need to decide where is the limit of the platform such that vended functionality stops and extension points ![](/assets/client-side-platforms-thoughts/staircase.svg){: .sparkline} begin. Finally, we have to figure out which low-level capabilities to expose to clients and how to do it safely.
+Client-side platforms are solutions that should be “leaky by design” [[7]](#7). In figure 2. ![](/assets/client-side-platforms-thoughts/client-platform-cliff.svg){: .sparkline}, clients that hit the limits of the platform have to <span style="color: #c92a2a;">acquire a lot of expertise</span> to use the next level of abstraction. If the platform is difficult to extend, then it will lead to poor user retention.  Instead, we'd like to provide a "staircase" experience ![](/assets/client-side-platforms-thoughts/client-platform-steps.svg){: .sparkline}, where clients are given several _extension points_ that expose just enough of the underlying components such that "peeling the onion" isn't too difficult. 
+
+There are several challenges with achieving the staircase experience. First, we have to figure out how to provide a gradual ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} developer experience where getting started is easy and adding advanced functionality remains relatively easy. Second, we need to decide where is the limit of the platform such that vended functionality stops and extension points ![](/assets/client-side-platforms-thoughts/staircase.svg){: .sparkline} begin. Finally, we have to figure out which one of these low-level capabilities we want to expose to clients and how.
 
 ## Techniques for discovering complexity
 
-This section outlines design guidelines for building a client-side platform that satisfies the staircase experience while addressing concerns around platform weaknesses.
+This section provides guidelines, mostly adapted from "Hints and Principles for Computer System Design." [[5]](#5) and Terry Crowley's [blog](https://terrycrowley.medium.com/), for tackling the design challenges around client-side platforms.
 
 ### From getting started ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} to advanced functionality 
 
 0. Hiding undesirable properties.
 1. Smart defaults.
-2. We aim for consistency to the best of our knowledge but not for completeness.
+2. We aim for consistency to the best of our knowledge but not for completeness across layers -- minimum lovable product.
 3. For advanced functionality: nested (composite) configuration and recommended actions.
 
 ### Drawing a boundary
+> Don’t hide power. Leave it to the client. - Butler Lampson [[5]](#5)  
+
+> Often a module that succeeds in doing one thing well becomes more elaborate and does several things. This is okay, as long as it continues to do its original job well. If you extend it too much, though, you’ll end up with a mess. Only good judgment can protect you from this. - Butler Lampson [[5]](#5)  
 
 Operations and performance. Do not hide power.
 
@@ -85,7 +90,6 @@ Talk about maintainance cost of new integrations.
 ### Exposing internal layers
 > The flaw in this approach is that it presumes that the designer of the programming language will build into the language most of the abstractions that users of the language will want. Such foresight is not given to many; and even if it were, a language containing so many built-in abstractions might well be so unwieldy as to be unusable. - Barbara Liskov
 
-> The onion principle: doing a simple task is simple, and if it’s less simple, you peel one layer off the onion. The more layers you peel off, the more you cry. — Bjarne Stroustrup
 
 
 ## Further material
