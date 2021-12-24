@@ -40,19 +40,21 @@ Software is full of oppositions and some of the weaknesses of platforms are also
 
 An alternative to _managed_ platforms is _client-side_ platforms. A client-side platform’s interface is like a managed one, however the underlying components are visible and owned by the client instead.  For example, the product that I work on, [AWS Copilot](https://aws.github.io/copilot-cli/), creates resources in the customer’s AWS account while providing a platform-like experience for containerized microservices. 
 
-The advantage of a client-side platform over a managed one is that there is an opportunity to mitigate one of its major concerns: _extensibility_.
+The primary advantage of a client-side platform over a managed one is that there is an opportunity to mitigate one of its major concerns: _extensibility_.
 
 
 ![client-side-platform](/assets/client-side-platforms-thoughts/client-platform.svg){: .center-image }
 <span class="center-image" style="text-align: center;"><i>Figure 2: User journey for client-side platforms</i></span>
 {: .tab-once}
 
-The developer experience starts off just like a managed platform, but once a client hits a functionality limit, they can drop down a level of abstraction and manage the exposed components themselves.  Therefore, clients can start with a great experience and over time end up at the same place as if they never used a platform to begin with. For example, Copilot manages all AWS resources via AWS CloudFormation stacks. If the properties surfaced by Copilot are not sufficient, clients have access to the created CloudFormation templates to manage the resources on their own.
+The developer experience starts off just like a managed platform, but once a client hits a functionality limit, they can drop down a level of abstraction and manage the exposed components themselves. Therefore, clients can start with a great experience and over time end up at the same place as if they never used a platform to begin with. For example, Copilot manages all resources via AWS CloudFormation stacks. If the properties surfaced by Copilot are not sufficient, clients have access to the generated CloudFormation templates to manage the resources on their own.  
+
+A secondary advantage is an increase in _agility_. It's faster to deliver the same feature client-side compared to a managed service. Let's compare what it takes to expose an internal component property, such as ECS's [`secrets`](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data-secrets.html) field, for a client-side tool like Copilot vs a service that would sit on top of ECS. As an end-user tool, client-side platforms don't have to worry about any dependencies. All communication for the feature remains within the team. On the other hand, a managed service would need to communicate across several teams: control plane, data plane, upstream dependencies (console, SDKs, CloudFormation). The feature is also more difficult to implement as the client's secret lives in a different AWS account than the abstracted ECS tasks. Finally, the managed service has to build operational visibility with dashboards, monitors, and alarms. 
 
 This gain in flexibility comes at the cost of the following benefits provided by managed platforms:
-* **Operations**. Since resources are created in the client’s account, the clients become responsible for the scalability, reliability, and resiliency of their applications. For example, if there is a surge in traffic, the client needs to configure autoscaling settings appropriately instead of leaving it to the platform to figure out how to scale their application. This means the interface for client-side platforms have to be more complicated than managed ones. 
+* **Operations**. Since resources are created in the client’s account, the clients become responsible for the scalability, reliability, and resiliency of their applications. For example, if there is a surge in traffic, the client needs to configure autoscaling settings appropriately instead of leaving it to the platform to figure out how to scale out. This means the interface for client-side platforms have to be more complicated than managed ones. 
 
-*  **Lack of information hiding**. The platform is usually built with assumptions about the underlying data model. Exposing the internal layers means that clients can modify them and break those assumptions. For example, if a customer of Copilot manually removed the `"aws-copilot-*"` tags from their resources, then Copilot won’t be aware of these resources and leak them. Clients don't know of this coupling and it can be a source of confusion for why the platform isn’t behaving as expected. Exposing the internals of the system can be a source of instability for the platform.
+*  **Lack of information hiding**. The platform is usually built with assumptions about the underlying data model. Exposing the internal layers means that clients can modify them and break those assumptions. For example, if a customer of Copilot manually removed the `"aws-copilot-*"` tags from their resources, then Copilot won’t be able to find them and ultimately leak these resources. Clients don't know of this coupling, and it can be a source of confusion for why the platform isn’t behaving as expected. Exposing the internals of the system can be a source of instability for the platform.
 
 ## Design challenges
 > A surprisingly hard problem is how to design a system that is “intentionally leaky” — where you can provide higher level functionality while still exposing internal layers that allow someone building on top of your component direct access to those lower layers.   
@@ -70,6 +72,9 @@ There are several challenges with achieving the staircase experience. First, we 
 This section provides guidelines, mostly adapted from "Hints and Principles for Computer System Design." [[5]](#5) and Terry Crowley's [blog](https://terrycrowley.medium.com/), for tackling the design challenges around client-side platforms.
 
 ### From getting started ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} to advanced functionality 
+
+Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **remove any undesirable properties** that the generic lower-level components expose. For example, Copilot's "Worker Service" abstraction does not expose fields from the hidden ECS task definition such as [`PortMappings`](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-containerdefinitions-portmappings.html) as an event-driven service should not accept connections.
+Another possibility is hiding properties between several components. For example, when integrating an Application Load Balancer with an ECS service, the target group's `port` field is not applicable [[8]](#8). 
 
 0. Hiding undesirable properties.
 1. Smart defaults.
@@ -100,3 +105,4 @@ Talk about maintainance cost of new integrations.
 <span id="5">[[5]](#5)</span> Lampson, Butler. "Hints and Principles for Computer System Design." arXiv preprint arXiv:2011.02455 (2020). [Link](https://arxiv.org/ftp/arxiv/papers/2011/2011.02455.pdf)  
 <span id="6">[[6]](#6)</span> Pavlo, Andy [@andy_pavlo], "In every DBMS project he's started, Mike always said "no knobs" in the beginning. But it's easier said than done of course. Postgres has ~350 knobs. MySQL has ~550. This graph from @danavanaken shows their knob counts over the last 20 years. This is why @OtterTuneAI exists.", Twitter, 2 Dec. 2021,[https://twitter.com/andy_pavlo/status/1466403668933189636](https://twitter.com/andy_pavlo/status/1466403668933189636)  
 <span id="7">[[7]](#7)</span>Terry Crowley, "Leaky by Design", Medium, 14 Dec. 2016, [https://medium.com/@terrycrowley/leaky-by-design-7b423142ece0#.qjytflxbs](https://medium.com/@terrycrowley/leaky-by-design-7b423142ece0#.qjytflxbs)  
+<span id="8">[[8]](#8)</span> [https://stackoverflow.com/a/42823808](https://stackoverflow.com/a/42823808)
