@@ -4,25 +4,25 @@ title: 'Thoughts on client-side platforms'
 tags: [design]
 ---
 
-_This post explains the motivation for client-side platforms by situating it against components and managed platforms, describes challenges with building a system that's "leaky by design", and then lists design guidelines to tackle these challenges._ 
+_This post explains the motivation for client-side platforms by situating it against composable components and managed platforms, describes challenges with building such systems, and then lists design guidelines to tackle these challenges._ 
 
 A platform is a collection of components on top of which many people can build programs, usually application programs [[1]](#1). AWS is well known [[2]](#2)[[3]](#3) for not building platforms, and instead delivering big components that can be composed together to build bespoke solutions:
 > I think a couple players then decided they need to really get going and they just chose the wrong abstraction to build. They built too high in the stack as opposed to these building blocks like we built, that allowed developers to stitch them together however they saw fit.
 > \- Andy Jassy
 
 There are several disadvantages for _managed_ platforms:
-* **Extensibility**. Platforms provide _complete_ solutions to clients.  As long as client needs are met, this focus on completeness results in a delightful user experience. However, eventually requirements will change and since clients can’t extend the platform, they lose the freedom to adapt their application to their customer requests.
+* **Extensibility**. Platforms provide _complete_ solutions to clients that cannot be extended.  As long as client needs are met, this focus on completeness results in a delightful user experience. However, eventually client requirements change and without the ability to extend the platform, they lose the freedom to adapt their application to their customer requests.
 ![managed-platform](/assets/client-side-platforms-thoughts/managed-platform.svg){: .center-image }
 <span class="center-image" style="text-align: center;"><i>Figure 1: User journey for managed platforms</i></span>
 
-* **Agility**.  Since platforms provide a _consistent_ interface across their functionalities, this simpler API comes at the expense of delivery speed. Adding 1 new feature to the platform forces you to evaluate how it fits with the existing N other features, slowing you down significantly as your feature set grows [[4]](#4).
+* **Agility**.  A platform's strength is providing a _consistent_ interface across their functionalities, this simpler API comes at the expense of delivery speed. Adding 1 new feature to the platform forces you to evaluate how it fits with the existing N other features, slowing you down significantly as your feature set grows [[4]](#4).
 
 * **Efficiency**.    
   > Slow, powerful operations force the client who doesn’t want the power to pay more for the basic function.
   > \- Butler Lampson [[5]](#5)  
   {: .inline-blockquote}
 
-  Platforms are a thick layer of abstraction. The additional features can result in the creation of unnecessary resources, resulting in a slower or more expensive experience for the client.  
+  Platforms are a thick layer of abstraction where the additional unwanted features can result in the creation of unnecessary resources. Consequently, resulting in a slower or more expensive experience for the client.  
   {: .after-blockquote}
 
 Software is full of oppositions and some of the weaknesses of platforms are also their strengths:
@@ -54,7 +54,7 @@ A secondary advantage is an increase in _agility_. It's faster to deliver the sa
 This gain in flexibility comes at the cost of the following benefits provided by managed platforms:
 * **Operations**. Since resources are created in the client’s account, the clients become responsible for the scalability, reliability, and resiliency of their applications. For example, if there is a surge in traffic, the client needs to configure autoscaling settings appropriately instead of leaving it to the platform to figure out how to scale out. This means the interface for client-side platforms have to be more complicated than managed ones. 
 
-*  **Lack of information hiding**. The platform is usually built with assumptions about the underlying data model. Exposing the internal layers means that clients can modify them and break those assumptions. For example, if a customer of Copilot manually removed the `"aws-copilot-*"` tags from their resources, then Copilot won’t be able to find them and ultimately leak these resources. Clients don't know of this coupling, and it can be a source of confusion for why the platform isn’t behaving as expected. Exposing the internals of the system can be a source of instability for the platform.
+*  **Lack of information hiding**. The platform is usually built with assumptions about the underlying data model and exposing the internal layers means that clients can modify them and break those assumptions. For example, if a customer of Copilot manually removed the `"aws-copilot-*"` tags from their resources, then Copilot won’t be able to find them and ultimately leak these resources. Clients aren't aware of this coupling, and it can be a source of confusion for why the platform isn’t behaving as expected. Exposing the internals of the system can be a source of instability for the platform.
 
 ## Design challenges
 > A surprisingly hard problem is how to design a system that is “intentionally leaky” — where you can provide higher level functionality while still exposing internal layers that allow someone building on top of your component direct access to those lower layers.   
@@ -63,18 +63,20 @@ This gain in flexibility comes at the cost of the following benefits provided by
 > The onion principle: doing a simple task is simple, and if it’s less simple, you peel one layer off the onion. The more layers you peel off, the more you cry. — Bjarne Stroustrup
 
 
-Client-side platforms are solutions that should be “leaky by design” [[7]](#7). In figure 2. ![](/assets/client-side-platforms-thoughts/client-platform-cliff.svg){: .sparkline}, clients that hit the limits of the platform have to <span style="color: #c92a2a;">acquire a lot of expertise</span> to use the next level of abstraction. If the platform is difficult to extend, then it will lead to poor user retention.  Instead, we'd like to provide a "staircase" experience ![](/assets/client-side-platforms-thoughts/client-platform-steps.svg){: .sparkline}, where clients are given several _extension points_ that expose just enough of the underlying components such that "peeling the onion" isn't too difficult. 
+Client-side platforms are solutions that should be “leaky by design” [[7]](#7). In figure 2. ![](/assets/client-side-platforms-thoughts/client-platform-cliff.svg){: .sparkline}, clients that hit the limits of the platform have to <span style="color: #c92a2a;">acquire a lot of expertise</span> to use the next level of abstraction. If the platform is difficult to extend, then it will lead to poor user retention.  Instead, we'd like to provide a "staircase" experience ![](/assets/client-side-platforms-thoughts/client-platform-steps.svg){: .sparkline}, where clients are given several _extension points_ that expose just enough of the underlying components such that "peeling the onion" isn't too painful. 
 
 There are several challenges with achieving the staircase experience. First, we have to figure out how to provide a gradual ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} developer experience where getting started is easy and adding advanced functionality remains relatively easy. Second, we need to decide where is the limit of the platform such that vended functionality stops and extension points ![](/assets/client-side-platforms-thoughts/staircase.svg){: .sparkline} begin. Finally, we have to figure out which one of these low-level capabilities we want to expose to clients and how.
 
 ## Techniques for discovering complexity
 
-This section provides guidelines, mostly adapted from "Hints and Principles for Computer System Design." [[5]](#5) and Terry Crowley's [blog](https://terrycrowley.medium.com/), for tackling the design challenges around client-side platforms.
-
 ### From getting started ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} to advanced functionality 
 
-Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **remove any undesirable properties** that the generic lower-level components expose. For example, Copilot's "Worker Service" abstraction does not expose fields from the hidden ECS task definition such as [`PortMappings`](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-containerdefinitions-portmappings.html) as an event-driven service should not accept connections.
-Another possibility is hiding properties between several components. For example, when integrating an Application Load Balancer with an ECS service, the target group's `port` field is not applicable [[8]](#8). 
+Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **remove any undesirable properties** that are not relevant to the opinion. For example, Copilot's `Worker Service` abstraction does not expose fields from the underlying ECS task definition such as `PortMappings` because a queue-processing service should not accept incoming connections.  
+Another set of undesirable properties are fields that become unusable when two components integrate with each other. For example, when connecting an Application Load Balancer with an ECS service, the target group's `port` field is not applicable [[8]](#8). 
+
+**Populate options with best guesses**. Pre-fill as many options as possible by guessing the client's intent. For example, Copilot parses the the client's `Dockerfile` to autofill configuration such as the container's `port` and `healthcheck` settings.
+
+**Suggest follow-up actions**. In order to slowly introduce clients to advanced functionality, recommend follow-up actions to users. For example, when a user creates a service with `copilot svc init`, Copilot hints to the client that more configuration is available at `path/to/manifest.yml` and they can run `copilot svc deploy` to update their service.
 
 0. Hiding undesirable properties.
 1. Smart defaults.
@@ -95,7 +97,7 @@ Talk about maintainance cost of new integrations.
 ### Exposing internal layers
 > The flaw in this approach is that it presumes that the designer of the programming language will build into the language most of the abstractions that users of the language will want. Such foresight is not given to many; and even if it were, a language containing so many built-in abstractions might well be so unwieldy as to be unusable. - Barbara Liskov
 
-
+It's more important to have reflexive features rather than getting the extension points right.
 
 ## Further material
 <span id="1">[[1]](#1)</span> Lampson, Butler W. "Software components: Only the giants survive." Computer Systems. Springer, New York, NY, 2004. 137-145. [Link](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.9546&rep=rep1&type=pdf#page=133)  
