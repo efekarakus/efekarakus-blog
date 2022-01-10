@@ -71,7 +71,7 @@ There are several challenges with achieving the staircase experience. First, we 
 
 ### From getting started ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} to advanced functionality 
 
-Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **have a point of view**. It's not that the platform's viewpoint is more correct than another, but that it's more convenient for some purpose [[5]](#5). For example, the Copilot team decided to default to favoring cost over scalability for its abstractions. By default, tasks are launched in public subnets secured with security groups, the client has to opt-in to the creation of NAT gateways and placement in private subnets if they have compliance or scalability reasons. It's perfectly reasonable to take the opposite stance and aim for scalability first. It just depends who the platform is for.
+Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **have a point of view**. It's not that the platform's viewpoint is more correct than another, but that it's more convenient for some purpose [[5]](#5). For example, the Copilot team decided to favor cost over high-availability for its abstractions. By default, tasks are launched in public subnets secured with security groups, the client has to opt-in to the creation of NAT gateways and placement in private subnets if they have compliance or scalability reasons. It's perfectly reasonable to take the opposite stance and aim for availability first. It just depends who the platform is for.
 
 **Remove any undesirable properties** that are not relevant to the opinion. For example, Copilot's `Worker Service` abstraction does not expose fields from the underlying ECS task definition such as `PortMappings` because a queue-processing service should not accept incoming connections.  
 Another set of undesirable properties are fields that become unusable when two components integrate with each other. For example, when connecting an Application Load Balancer with an ECS service, the target group's `port` field is not applicable [[8]](#8). 
@@ -83,13 +83,7 @@ Another set of undesirable properties are fields that become unusable when two c
 ### Drawing a boundary
 > Don’t hide power. Leave it to the client. - Butler Lampson
 
-**Operations and performance are desirable properties**. Since client-side platforms can't control the client's application once its running, they have to surface settings to help clients operate applications on their own. However, they can provide smart defaults and visibility into their applications. TODO: need to expand on what we mean by operational configurations (availability, deployments, provisioning, emergency response) (availability, latency, performance, efficiency, change management, monitoring, emergency response, and capacity planning) (https://sre.google/sre-book/introduction/)
-
-Operations and performance. Do not hide power.
-
-Features in terms of additional usecases supported is where you decide where your limit should be.
-
-Talk about maintainance cost of new integrations.
+**Operations and performance are desirable properties**. Clients should have access to configuration that allows their applications to scale, be reliable, resilient, and performant. These underlying component properties should not be hidden by the platform. Here is an overview of feature requests that should be accepted by the client-side platform: surfacing autoscaling properties (scale), task count (reliability), health checks (reliability), deployment configuration (reliability), allowing setting automated tests and monitoring for pipeline stages (reliability), setting retries, timeouts, throttling for dependencies (resiliency), throttling incoming requests (resiliency), more cpu, memory, storage (performance). 
 
 ### Exposing internal layers
 > The flaw in this approach is that it presumes that the designer of the programming language will build into the language most of the abstractions that users of the language will want. Such foresight is not given to many; and even if it were, a language containing so many built-in abstractions might well be so unwieldy as to be unusable. - Barbara Liskov
