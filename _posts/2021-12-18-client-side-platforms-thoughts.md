@@ -4,22 +4,22 @@ title: 'Thoughts on client-side platforms'
 tags: [design]
 ---
 
-_This post explains the motivation for client-side platforms by situating it against composable components and managed platforms, describes challenges with building such systems, and then lists design guidelines to tackle these challenges._ 
+_This post explains the motivation for client-side platforms by situating it against components and managed platforms, describes challenges with building such systems, and then lists design guidelines to tackle these challenges._ 
 
 A platform is a collection of components on top of which many people can build programs, usually application programs [[1]](#1). AWS is well known [[2]](#2)[[3]](#3) for not building platforms, and instead delivering big components that can be composed together to build bespoke solutions:
 > I think a couple players then decided they need to really get going and they just chose the wrong abstraction to build. They built too high in the stack as opposed to these building blocks like we built, that allowed developers to stitch them together however they saw fit.
-> \- Andy Jassy
+> —Andy Jassy
 
 There are several disadvantages for _managed_ platforms:
-* **Extensibility**. Platforms provide _complete_ solutions that cannot be extended. While the platform meets the client's needs, this focus on completeness results in a delightful user experience. However, eventually new functional requirements emerge and without extension points it becomes difficult for the client to adapt their application.
-![managed-platform](/assets/client-side-platforms-thoughts/managed-platform.svg){: .center-image }
+* **Extensibility**. Platforms provide _complete_ solutions that cannot be extended. While the platform meets the client's needs, this focus on completeness results in a delightful user experience. However, eventually new functional requirements emerge and without extension points it becomes difficult for the client to adapt their application to new demands.
+![managed-platform](/assets/client-side-platforms-thoughts/managed-platform.svg){: .center-image .medium }
 <span class="center-image" style="text-align: center;"><i>Figure 1: User journey for managed platforms</i></span>
 
 * **Agility**.  A platform's strength is providing a _consistent_ interface across their functionalities, this simpler API comes at the expense of delivery speed. Adding 1 new feature to the platform forces you to evaluate how it fits with the existing N other features, slowing you down significantly as your feature set grows [[4]](#4).
 
 * **Efficiency**.    
   > Slow, powerful operations force the client who doesn’t want the power to pay more for the basic function.
-  > \- Butler Lampson [[5]](#5)  
+  > —Butler Lampson [[5]](#5)  
   {: .inline-blockquote}
 
   Platforms are a thick layer of abstraction where the additional unwanted features can result in the creation of unnecessary resources. Consequently, resulting in a slower or more expensive experience for the client.  
@@ -30,7 +30,7 @@ Software is full of oppositions and some of the weaknesses of platforms are also
 
 * **Consistency**.    
    > If you take 10 components off the shelf, you are putting 10 world views together, and the result will be a mess. No one is responsible for design integrity, and only the poor client is responsible for the whole thing working together.
-   > \- Butler Lampson [[1]](#1)  
+   > —Butler Lampson [[1]](#1)  
    {: .inline-blockquote}
 	
    The learning curve is too long for clients building applications from primitive components. One of the contributing factors in the difficulty is this inconsistency between interfaces. Platforms take over this burden. They provide a more gradual developer experience by vending a consistent API on top of these components.
@@ -43,13 +43,13 @@ An alternative to _managed_ platforms is _client-side_ platforms. A client-side 
 The primary advantage of a client-side platform over a managed one is that there is an opportunity to mitigate one of its major concerns: _extensibility_.
 
 
-![client-side-platform](/assets/client-side-platforms-thoughts/client-platform.svg){: .center-image }
+![client-side-platform](/assets/client-side-platforms-thoughts/client-platform.svg){: .center-image .medium }
 <span class="center-image" style="text-align: center;"><i>Figure 2: User journey for client-side platforms</i></span>
 {: .tab-once}
 
 The developer experience starts off just like a managed platform, but once a client hits a functionality limit, they can drop down a level of abstraction and manage the exposed components themselves. Therefore, clients can start with a great experience and over time end up at the same place as if they never used a platform to begin with. For example, Copilot manages all resources via AWS CloudFormation stacks. If the properties surfaced by Copilot are not sufficient, clients have access to the generated CloudFormation templates to manage the resources on their own.  
 
-A secondary advantage is an increase in _agility_. It's faster to deliver the same feature client-side compared to a managed service. Let's compare what it takes to expose an internal component property, such as ECS's [`secrets`](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data-secrets.html) field, for a client-side tool like Copilot vs a service that would sit on top of ECS. As an end-user tool, client-side platforms don't have to worry about any dependencies. All communication for the feature remains within the team. On the other hand, a managed service would need to communicate across several teams: control plane, data plane, upstream dependencies (console, SDKs, CloudFormation). The feature is also more difficult to implement as the client's secret lives in the client's AWS account whereas the running ECS tasks are in the service's account. Finally, the managed service has to build operational visibility with dashboards, monitors, and alarms. 
+A secondary advantage is an increase in _agility_. It's faster to deliver the same feature client-side compared to a managed service. Let's compare what it takes to expose an internal component property, such as ECS's [`secrets`](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data-secrets.html) field, for a client-side tool like Copilot vs a managed service that would sit on top of ECS. As an end-user tool, client-side platforms don't have to worry about any dependencies. All communication for the feature remains within the team. On the other hand, a managed service needs to communicate across several teams: control plane, data plane, upstream dependencies (console, SDKs, CloudFormation). The feature is also more difficult to implement as the client's secret lives in the client's AWS account whereas the running ECS tasks are in the service's account. Finally, the managed service has to build operational visibility with dashboards, monitors, and alarms. 
 
 This gain in flexibility comes at the cost of the following benefits provided by managed platforms:
 * **Operations**. Since resources are created in the client’s account, the clients become responsible for the scalability, reliability, and resiliency of their applications. For example, if there is a surge in traffic, the client needs to configure autoscaling settings appropriately instead of leaving it to the platform to figure out how to scale out. This means the interface for client-side platforms have to be more complicated than managed ones. 
@@ -58,10 +58,9 @@ This gain in flexibility comes at the cost of the following benefits provided by
 
 ## Design challenges
 > A surprisingly hard problem is how to design a system that is “intentionally leaky” — where you can provide higher level functionality while still exposing internal layers that allow someone building on top of your component direct access to those lower layers.   
-> \- Terry Crowley [[7]](#7)
-
-> The onion principle: doing a simple task is simple, and if it’s less simple, you peel one layer off the onion. The more layers you peel off, the more you cry. — Bjarne Stroustrup
-
+> —Terry Crowley [[7]](#7)  
+>  
+> The onion principle: doing a simple task is simple, and if it’s less simple, you peel one layer off the onion. The more layers you peel off, the more you cry. —Bjarne Stroustrup
 
 Client-side platforms are solutions that should be “leaky by design” [[7]](#7). In figure 2. ![](/assets/client-side-platforms-thoughts/client-platform-cliff.svg){: .sparkline}, clients that hit the limits of the platform have to <span style="color: #c92a2a;">acquire a lot of expertise</span> to use the next level of abstraction. If the platform is difficult to extend, then it will lead to poor user retention.  Instead, we'd like to provide a "staircase" experience ![](/assets/client-side-platforms-thoughts/client-platform-steps.svg){: .sparkline}, where clients are given several _extension points_ that expose just enough of the underlying components such that "peeling the onion" isn't too painful. 
 
@@ -71,7 +70,7 @@ There are several challenges with achieving the staircase experience. First, we 
 
 ### From getting started ![](/assets/client-side-platforms-thoughts/gradual.svg){: .sparkline} to advanced functionality 
 
-Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **have a point of view**. It's not that the platform's viewpoint is more correct than another, but that it's more convenient for some purpose [[5]](#5). For example, the Copilot team decided to favor cost over high-availability for its abstractions. By default, tasks are launched in public subnets secured with security groups, the client has to opt-in to the creation of NAT gateways and placement in private subnets if they have compliance or scalability reasons. It's perfectly reasonable to take the opposite stance and aim for availability first. It just depends who the platform is for.
+Client-side platforms provide opinionated abstractions. The first step in making getting started easy is to **have a point of view**. It's not that the platform's viewpoint is more correct than another, but that it's more convenient for some purpose [[5]](#5). For example, the Copilot team decided the default experience should favor cost over high-availability for its abstractions. Tasks are launched in public subnets secured with security groups, if clients have compliance or scalability concerns the client has to opt-in to the creation of NAT gateways and placement in private subnets. It's perfectly reasonable to take the opposite stance and aim for availability first. It just depends who the platform is for.
 
 **Remove any undesirable properties** that are not relevant to the opinion. For example, Copilot's `Worker Service` abstraction does not expose fields from the underlying ECS task definition such as `PortMappings` because a queue-processing service should not accept incoming connections.  
 Another set of undesirable properties are fields that become unusable when two components integrate with each other. For example, when connecting an Application Load Balancer with an ECS service, the target group's `port` field is not applicable [[8]](#8). 
@@ -81,14 +80,23 @@ Another set of undesirable properties are fields that become unusable when two c
 **Suggest follow-up actions**. In order to slowly introduce clients to advanced functionality, recommend follow-up actions to users. For example, when a user creates a service with `copilot svc init`, Copilot hints to the client that more configuration is available at `path/to/manifest.yml` and they can run `copilot svc deploy` to update their service.
 
 ### Drawing a boundary
-> Don’t hide power. Leave it to the client. - Butler Lampson
+> Don’t hide power. Leave it to the client. —Butler Lampson  
+>  
+> The cost of adding a feature isn’t just the time it takes to code it, [it’s the] obstacle to future expansion. ... Pick the features that don’t fight each other. —John Carmack
 
-**Operations and performance are desirable properties**. Clients should have access to configuration that allows their applications to scale, be reliable, resilient, and performant. These underlying component properties should not be hidden by the platform. Here is an overview of feature requests that should be accepted by the client-side platform: surfacing autoscaling properties (scale), task count (reliability), health checks (reliability), deployment configuration (reliability), allowing setting automated tests and monitoring for pipeline stages (reliability), setting retries, timeouts, throttling for dependencies (resiliency), throttling incoming requests (resiliency), more cpu, memory, storage (performance). 
+**Operations and performance are desirable properties**. Clients should have access to configuration that allows their applications to scale, be reliable, resilient, and performant. These underlying component properties should not be hidden by the client-side platform. Here is an overview of feature requests that should be accepted by the platform: surfacing autoscaling properties (scale), task count (reliability), health checks (reliability), deployment configuration (reliability), allowing setting automated tests and monitoring for pipeline stages (reliability), setting retries, timeouts, throttling for dependencies (resiliency), throttling incoming requests (resiliency), more cpu, memory, storage (performance). 
+
+We don't want to implement every single specific asks from customers as it can lead to a codebase so fragile that seemingly simple changes wind up taking a very long time. In order to minimize feature creep, **stick to your viewpoint**, **pick features that don't fight each other**, and **if in doubt, leave it out**.  
+If the essence of the customer's ask does not match the platform's viewpoint, then the system should not directly support the feature. Instead, the request should be evaluated as a datapoint for an extension. The client should be able to "peel the onion" and mitigate the request on their own. For example, let's consider Copilot's mission "helping build containerized applications on AWS with _DevOps best practices_" as a viewpoint. When a client creates a database with the tool, Copilot generates CloudFormation templates that conform to the "database per service" pattern [[9]](#9). If a client wants to deviate from the recommendation and have more than one microservice access the database, then they have to understand CloudFormation and modify the templates on their own.  
+In general, if you're not clear on the problems a feature request solves then wait it out. Reach out to multiple customers, search for commonalities, try to find a single interface that can be used for multiple usecases.
 
 ### Exposing internal layers
-> The flaw in this approach is that it presumes that the designer of the programming language will build into the language most of the abstractions that users of the language will want. Such foresight is not given to many; and even if it were, a language containing so many built-in abstractions might well be so unwieldy as to be unusable. - Barbara Liskov
+> The flaw in this approach is that it presumes that the designer of the programming language will build into the language most of the abstractions that users of the language will want. Such foresight is not given to many; and even if it were, a language containing so many built-in abstractions might well be so unwieldy as to be unusable. —Barbara Liskov
 
-It's more important to have reflexive features rather than getting the extension points right.
+An effective way of surfacing extension points to clients is to build **reflexive features**. These are foundational features that can be used as building blocks by both the client and the platform. For example, `copilot storage init` is a utility command that creates CloudFormation templates to wire databases (such as DynamoDB) to a microservice. However, clients have the freedom to skip the command and instead write their own templates to connect a resource not yet supported (such as OpenSearch) by the platform to the service. Both Copilot and the clients use the same mechanism under the hood (CloudFormation templates under a special path) to support the creation of additional AWS resources for a microservice.
+
+## Conclusion
+
 
 ## Further material
 <span id="1">[[1]](#1)</span> Lampson, Butler W. "Software components: Only the giants survive." Computer Systems. Springer, New York, NY, 2004. 137-145. [Link](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.9546&rep=rep1&type=pdf#page=133)  
@@ -97,5 +105,6 @@ It's more important to have reflexive features rather than getting the extension
 <span id="4">[[4]](#4)</span> Terry Crowley, "My $0.02 on Is Worse Better?", Medium, 7 Mar 2019, [https://medium.com/hackernoon/my-0-02-on-is-worse-better-e240784ed6a7](https://medium.com/hackernoon/my-0-02-on-is-worse-better-e240784ed6a7)  
 <span id="5">[[5]](#5)</span> Lampson, Butler. "Hints and Principles for Computer System Design." arXiv preprint arXiv:2011.02455 (2020). [Link](https://arxiv.org/ftp/arxiv/papers/2011/2011.02455.pdf)  
 <span id="6">[[6]](#6)</span> Pavlo, Andy [@andy_pavlo], "In every DBMS project he's started, Mike always said "no knobs" in the beginning. But it's easier said than done of course. Postgres has ~350 knobs. MySQL has ~550. This graph from @danavanaken shows their knob counts over the last 20 years. This is why @OtterTuneAI exists.", Twitter, 2 Dec. 2021,[https://twitter.com/andy_pavlo/status/1466403668933189636](https://twitter.com/andy_pavlo/status/1466403668933189636)  
-<span id="7">[[7]](#7)</span>Terry Crowley, "Leaky by Design", Medium, 14 Dec. 2016, [https://medium.com/@terrycrowley/leaky-by-design-7b423142ece0#.qjytflxbs](https://medium.com/@terrycrowley/leaky-by-design-7b423142ece0#.qjytflxbs)  
-<span id="8">[[8]](#8)</span> [https://stackoverflow.com/a/42823808](https://stackoverflow.com/a/42823808)
+<span id="7">[[7]](#7)</span> Terry Crowley, "Leaky by Design", Medium, 14 Dec. 2016, [https://medium.com/@terrycrowley/leaky-by-design-7b423142ece0#.qjytflxbs](https://medium.com/@terrycrowley/leaky-by-design-7b423142ece0#.qjytflxbs)  
+<span id="8">[[8]](#8)</span> [https://stackoverflow.com/a/42823808](https://stackoverflow.com/a/42823808)  
+<span id="9">[[9]](#9)</span> Microservices Pattern: Database per service, [https://microservices.io/patterns/data/database-per-service.html](https://microservices.io/patterns/data/database-per-service.html)

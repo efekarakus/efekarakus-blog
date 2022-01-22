@@ -4,7 +4,20 @@
 .center-image{
   margin: 0 auto;
   display: block;
+  
+  
 }
+
+img.medium {
+  width: 80%;
+}
+
+@include media-query($on-palm) { 
+  img.medium {
+    width: 100%;
+  } 
+}
+
 
 /**
  * Reset some basic elements
