@@ -8,6 +8,7 @@ Can you spot what’s strange about the following CloudFormation snippet?
 AdministrationRole:
   Type: AWS::IAM::Role
   Properties:
+    RoleName: !Ref AdminRoleName
     AssumeRolePolicyDocument:
       Statement:
         - Effect: Allow
