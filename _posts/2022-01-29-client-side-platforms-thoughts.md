@@ -2,6 +2,7 @@
 layout: post
 title: 'Thoughts on client-side platforms'
 tags: [design]
+favorite: true
 ---
 
 _This post explains the motivation for client-side platforms by situating it against components and managed platforms, describes challenges with building such systems, and then lists design guidelines to tackle these challenges._ 

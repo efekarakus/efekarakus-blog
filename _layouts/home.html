@@ -4,46 +4,40 @@ layout: default
 
 <div class="home">
   {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
+  <h1 class="page-heading">{{ page.title }}</h1>
   {%- endif -%}
 
   {{ content }}
-      <div class="subscription">
-        <div class="subscription-content">
-          If you enjoyed some of these posts, you can subscribe to the newsletter to get notified
-          for any new writing!
-          <form
-            action="https://buttondown.email/api/emails/embed-subscribe/efekarakus"
-            method="post"
-            target="popupwindow"
-            onsubmit="window.open('https://buttondown.email/efekarakus', 'popupwindow')"
-            class="embeddable-buttondown-form"
-          >
-            <input class="email" type="email" name="email" id="bd-email" placeholder="Email address">
-            <input type="hidden" value="1" name="embed"></input>
-            <input class="subscribe" type="submit" value="Subscribe"></input>
-          </form>
-      </div>
+  <div class="subscription">
+    <div class="subscription-content">
+      If you find these posts valuable, you can subscribe to the newsletter here!
+      <form action="https://buttondown.email/api/emails/embed-subscribe/efekarakus" method="post" target="popupwindow"
+        onsubmit="window.open('https://buttondown.email/efekarakus', 'popupwindow')" class="embeddable-buttondown-form">
+        <input class="email" type="email" name="email" id="bd-email" placeholder="Email address">
+        <input type="hidden" value="1" name="embed"></input>
+        <input class="subscribe" type="submit" value="Subscribe"></input>
+      </form>
     </div>
+  </div>
   {%- if site.posts.size > 0 -%}
-    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-    <ul class="post-list">
-      {%- for post in site.posts -%}
-      <li>
-        {%- if post.favorite -%}
-        <span class="favorite">★ </span>
-        {%- endif -%}
-        <a class="post-link" href="{{ post.url | relative_url }}">
-          {{ post.title | escape }}
-        </a>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
+  <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
+  <ul class="post-list">
+    {%- for post in site.posts -%}
+    <li>
+      {%- if post.favorite -%}
+      <span class="favorite">★ </span>
+      {%- endif -%}
+      <a class="post-link" href="{{ post.url | relative_url }}">
+        {{ post.title | escape }}
+      </a>
+      {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+      <span class="post-meta">{{ post.date | date: date_format }}</span>
+      {%- if site.show_excerpts -%}
+      {{ post.excerpt }}
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ul>
   {%- endif -%}
 
 </div>
