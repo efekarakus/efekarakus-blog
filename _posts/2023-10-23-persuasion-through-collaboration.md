@@ -29,7 +29,7 @@ Clarifying the main propositions and agreeing on valid points from the author ch
 ## 3. Lead through questions
 > The Socratic method doesn’t replace your current opinions with better ones. It changes your relationship to your opinions. It replaces the love of holding them with the love of testing them. [[1]](https://www.amazon.com/Socratic-Method-Practitioners-Handbook/dp/1567926851)
 
-Real persuasion isn’t done by forcing the author into submission, or writing embarrassing snarky comments on the document. Instead, our task as reviewers is to have the author see things our way. In order to create an environment of cooperation, we have to change our way of delivering feedback from “X isn’t valid because of Y” to a series of little questions that builds agreement along the way until the reviewer highlights inconsistencies, exposes complexity, or gaps in the thinking of the author. 
+Real persuasion isn’t done by forcing the author into submission, or writing embarrassing comments on the document. Instead, our task as reviewers is to have the author see things our way. In order to create an environment of cooperation, we have to change our way of delivering feedback from “X isn’t valid because of Y” to a series of little questions that builds agreement along the way until the reviewer highlights inconsistencies, exposes complexity, or gaps in the thinking of the author. 
 
 **Example 3.1.** “Do you agree that the static service alternative would only need 2 containers to be running concurrently at all times?” (Yes.) “Then, the expected cost for the containerized option seems to be around $32/month, is that right?” (Yes.) “Then, do you think that cost is an important factor in the decision of the architecture? Can we eliminate it?”
 
