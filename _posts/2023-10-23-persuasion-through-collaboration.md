@@ -36,7 +36,7 @@ Real persuasion isn’t done by forcing the author into submission, or writing e
 The example above is a bit roundabout and can be short circuited if the participants trust each other. But in general, the Socratic approach forces you to move in lockstep with the author until the author arrives at an impasse that needs more thinking [^1]. Compared to a direct attack on the idea, the approach of leading through questions makes the person undergoing a review want to continue working with you.
 
 ## 4. Explicitly state “document” feedback
-Finally, the last piece of advice that was given to me by one of my mentors was around _separating document feedback from idea feedback_. As a reviewer, you can suggest a different document style to help the author present their ideas more effectively but it’s important to highlight that this is not a criticism of the idea but rather of the presentation. 
+Finally, the last piece of advice that was given to me by [one](https://www.clareliguori.com/) of my mentors was around _separating document feedback from idea feedback_. As a reviewer, you can suggest a different document style to help the author present their ideas more effectively but it’s important to highlight that this is not a criticism of the idea but rather of the presentation. 
 
 **Example 4.1.** “I think all the important ideas are there in this document, but I found the decision matrix too overwhelming to digest as there were too many options to evaluate. This is a document feedback, consider structuring the document as a series of smaller decision matrices so that the cognitive load on the reader is reduced per decision.”
 
