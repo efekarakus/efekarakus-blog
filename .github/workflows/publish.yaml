@@ -9,5 +9,7 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
+      - name: Create jekyll dirs
+        run: mkdir .jekyll-cache _site
       - name: Build site
         run: make docker-build
