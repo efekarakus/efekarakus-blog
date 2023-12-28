@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-👋 Hi! I'm [@efekarakus](https://twitter.com/efekarakus), a sr. software engineer at [Amazon Web Services](https://aws.amazon.com/) from Istanbul, Turkey. 
+👋 Hi! I'm [@efekarakus](https://www.linkedin.com/in/efekarakus), a sr. software engineer at [Amazon Web Services](https://aws.amazon.com/) from Istanbul, Turkey. 
 
 This blog is mainly for myself and contains lessons learned on software engineering and programming methodology that I want to continue remembering.
 

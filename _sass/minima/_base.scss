@@ -19,6 +19,16 @@ img.medium {
 }
 
 
+img.mediumish {
+  width: 70%;
+}
+
+@include media-query($on-palm) { 
+  img.mediumish {
+    width: 100%;
+  } 
+}
+
 /**
  * Reset some basic elements
  */
