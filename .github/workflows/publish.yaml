@@ -6,6 +6,8 @@ jobs:
   publish:
     name: Deploy docs
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
@@ -20,6 +22,6 @@ jobs:
           aws-region: us-east-1
       - name: Upload assets
         working-directory: _site
-        run: aws s3 cp . s3://${{ env.S3_BUCKET_NAME }}/ --recursive
+        run: aws s3 cp . s3://${{ secrets.S3_BUCKET_NAME }}/ --recursive
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ env.CLOUDFRONT_ID }} --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
