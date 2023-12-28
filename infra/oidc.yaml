@@ -1,0 +1,61 @@
+Parameters:
+  ThumbprintList:
+    Type: String 
+    Default: 6938fd4d98bab03faadb97b34396831e3780aea1
+    Description: A thumbprint of an Open ID Connector is a SHA1 hash of the public certificate of the host
+  GitHubRepoName:
+    Type: String
+    Default: efekarakus/efekarakus-blog
+    Description: orgname/reponame
+  PublicSiteBucketName:
+    Type: String
+    Description: The name of the S3 bucket where the static site will be uploaded.
+  CloudFrontDistributionID:
+    Type: String
+    Description: The ID of the CloudFront distribution in front of the S3 bucket.
+Resources:
+  OIDCProvider:
+      Type: AWS::IAM::OIDCProvider
+      Properties:
+          Url: "https://token.actions.githubusercontent.com"
+          ClientIdList:
+            - "sts.amazonaws.com"
+          ThumbprintList:
+             - !Ref ThumbprintList 
+
+  GitHubBlogIAMRole:
+      Type: AWS::IAM::Role
+      Properties:
+          Path: "/blog/"
+          AssumeRolePolicyDocument:
+             Statement:
+               - Effect: Allow
+                 Action: sts:AssumeRoleWithWebIdentity
+                 Principal:
+                   Federated: !Ref OIDCProvider
+                 Condition:
+                   StringLike:
+                     token.actions.githubusercontent.com:sub: !Sub repo:${GitHubRepoName}:*
+          MaxSessionDuration: 3600
+          Description: "Github Actions role"
+          Policies:
+            - PolicyName: 'PutAssetsToS3'
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                - Effect: Allow
+                  Action:
+                  - 's3:PutObject'
+                  Resource: !Sub arn:${AWS::Partition}:s3:::${PublicSiteBucketName}/*
+            - PolicyName: 'InvalidateCFDistribution'
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                - Effect: Allow
+                  Action:
+                  - 'cloudfront:CreateInvalidation'
+                  Resource: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistributionID}  
+Outputs:
+  GitHubBlogIAMRoleArn:
+    Description: IAM role for GitHub
+    Value: !GetAtt GitHubBlogIAMRole.Arn
