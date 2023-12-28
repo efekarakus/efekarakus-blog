@@ -2,14 +2,7 @@
 layout: post
 title: 'Sweating the small stuff'
 tags: [planning]
-image: /assets/sweating-the-small-stuff/headcount-allocation.png
 ---
-
-> In my life as an architect, I find that the single thing which inhibits young professionals, new students most severely, is their acceptance of standards that are too low. If I ask a student whether her design is as good as Chartres, she often smiles tolerantly at me as if to say, “Of course not, that isn’t what I am trying to do… I could never do that”.  
-> Then, I express my disagreement and tell her: “**That standard _must_ be our standard**. If you are going to be a builder, no other standard is worthwhile. That is what I expect of myself in my own buildings, and it is what I expect of my students.”  Gradually, I show the students that they have a _right_ to ask this of themselves, and _must_ ask this of themselves. Once that level of standard is in their minds, they will be able to figure out, for themselves, how to do better, how to make something that is as profound as that.  
->  
-> Two things emanate from this changed standard. First the work becomes more fun. It is deeper, it never gets tiresome or boring. One’s work becomes a lifelong work, and one keeps trying and trying. But secondly, it does change what people are trying to do. It takes away from them the everyday, lower-level aspiration that is purely technical in nature, and replaces it with something deep, which will make a real difference to all of us that inhabit the earth.  
-> —Christopher Alexander
 
 At Amazon, we refer to any usability frictions or, more broadly, small product issues as [_paper cuts_](https://youtu.be/DcWqzZ3I2cY?feature=shared&t=5893). A few paper cuts aren't particularly damaging, but a thousand (paper) cuts cause significant customer pain. Fixing paper cuts and iterating on existing features is not only important to create experiences that customers are enthusiastic about, but at a personal level, it elevates our work to something we’re proud of.
 

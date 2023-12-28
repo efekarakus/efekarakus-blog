@@ -13,3 +13,13 @@ jobs:
         run: mkdir .jekyll-cache _site
       - name: Build site
         run: make docker-build
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.GH_ACTION_IAM_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Upload assets
+        working-directory: _site
+        run: aws s3 cp . s3://${{ env.S3_BUCKET_NAME }}/ --recursive
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ env.CLOUDFRONT_ID }} --paths "/*"
