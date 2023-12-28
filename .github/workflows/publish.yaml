@@ -10,4 +10,4 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@v4
       - name: Build site
-        run: make deploy-build
+        run: make docker-build
