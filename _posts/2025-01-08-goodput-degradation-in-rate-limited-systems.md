@@ -4,7 +4,7 @@ title: "Goodput degradation in rate-limited systems"
 tags: [distributed systems, operational excellence]
 ---
 
-In this post, we'll explore how "goodput" (the rate of useful, successful work completed) degrades under increasing load, particularly in multi-step workflows that depend on rate-limited services.
+In this post, we'll explore how "goodput" (the rate of useful, successful work completed) degrades under increasing load, particularly in multi-step workflows that depend on rate-limited services. We'll also see why throttling incoming requests leads to more useful work.
 
 {: style="overflow: auto; display: block;"}
 ![architecture](/assets/goodput-degradation/arch.png){: style="float: left; margin: 0px 15px 0px 0px;" width="250"} To illustrate this observation, let’s imagine we have a worker service that polls messages from a queue and needs to call a single downstream dependency to process each message. 
@@ -32,10 +32,12 @@ That exponential factor $$n$$ explains why the goodput drops so steeply once we 
 {: style="overflow: auto; display: block;"}
 ![sequential-call-goodput](/assets/goodput-degradation/fig3.png){: style="float: left; margin: 0px 15px 0px 0px;" width="250"}  The call pattern for a workflow impacts the shape the curve. Consider the same scenario with three calls per message ($$n=3$$), but now the calls happen sequentially instead of in parallel. We'll also consider $$W$$, which represents the mean processing time of a single call.
 
-While the goodput still increases linearly until reaching the peak of $$\frac{capacity}{n}$$, the degradation beyond the peak follows a linear pattern rather than the sharp exponential drop we saw with parallel calls.
+While the goodput still increases linearly until reaching the peak of $$\frac{capacity}{n}$$, the degradation beyond the peak follows a linear pattern rather than the sharp exponential drop we saw with parallel calls. [^1]
 
 ### Remedy
 
 Our takeaway is that although intuitively one might expect for the goodput to plateau after a certain point, we instead observe that additional load results in a degradation of useful work regardless of the workflow call pattern.  
 Therefore, a simple remedy to make sure we do as much good work as possible is to throttle at the service entry point. For our simple setup where there's a single dependency and calls complete in under one second, this throttle threshold turns out to be $$\frac{capacity}{n}$$.  
 Naturally, setting up input throttling causes messages to pile up in the input queue since we cannot keep up with the arrival rate. This means we need a strategy for handling excess messages such as only processing a sample of messages.
+
+[^1]: The source code for the simulations is available on [github](https://gist.github.com/efekarakus/77ba91221a1cbdf4a8db2ba146b91f3d).
