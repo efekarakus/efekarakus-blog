@@ -40,4 +40,7 @@ Our takeaway is that although intuitively one might expect for the goodput to pl
 Therefore, a simple remedy to make sure we do as much good work as possible is to throttle at the service entry point. For our simple setup where there's a single dependency and calls complete in under one second, this throttle threshold turns out to be $$\frac{capacity}{n}$$.  
 Naturally, setting up input throttling causes messages to pile up in the input queue since we cannot keep up with the arrival rate. This means we need a strategy for handling excess messages such as only processing a sample of messages.
 
+
+> _Thanks to Mitchell Valine for highlighting this observation and the discussions on Slack!_
+
 [^1]: The source code for the simulations is available on [github](https://gist.github.com/efekarakus/77ba91221a1cbdf4a8db2ba146b91f3d).
