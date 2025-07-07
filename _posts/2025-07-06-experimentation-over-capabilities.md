@@ -21,5 +21,5 @@ Before each sprint, teams should consult within themselves and other domain expe
 1. **Propose an experiment** for addressing the evals (divide and conquering a multi-agent architecture, agent roles, tool specifications)  
 2. **Propose additional realistic eval scenarios** that test new potential failure modes
 
-At sprint's end, teams report eval [pass rates](https://www.philschmid.de/agents-pass-at-k-pass-power-k) (pass@1, pass@k, and pass^k) and provide an [error analysis](https://hamel.dev/notes/llm/officehours/erroranalysis.html) report explaining where the system falls short. This analysis then informs the next set of experiments to address those gaps.
+At sprint's end, teams report on eval metrics such as [pass rates](https://www.philschmid.de/agents-pass-at-k-pass-power-k) (pass@1, pass@k, and pass^k), cost, latency, and provide an [error analysis](https://hamel.dev/notes/llm/officehours/erroranalysis.html) report explaining where the system falls short. This analysis then informs the next set of experiments to address those gaps.
 
