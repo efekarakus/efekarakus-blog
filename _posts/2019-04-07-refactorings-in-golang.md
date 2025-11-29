@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Refactorings in the Go Programming Language
+tagline: "A catalog of refactoring techniques specifically for Go that leverage its unique features like interfaces and type system."
 categories: [refactoring, golang]
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Fighting against duplication"
+tagline: "1 > 2 > 0. But man that 2 > 0 is painful."
 tags: [software engineering]
 ---
 

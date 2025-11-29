@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'Thoughts on client-side platforms'
+tagline: "Client-side platform tools let you start with simplicity and drop down to lower-level abstractions when you need more power."
 tags: [design]
 favorite: true
 ---

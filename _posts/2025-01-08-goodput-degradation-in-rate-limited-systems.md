@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Goodput degradation in rate-limited systems"
+tagline: "Throttle at the entry to preserve useful work."
 tags: [distributed systems, operational excellence]
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "How to Solve It: AWS Copilot's Progress Tracker"
+tagline: "An example of George Pólya's problem solving method applied to a software project."
 tags: [design]
 ---
 Towards the end of last year, I picked up [How to Solve It](https://www.amazon.com/How-Solve-Mathematical-Princeton-Science/dp/069116407X/ref=sr_1_1?dchild=1&keywords=how+to+solve+it&qid=1610911606&s=books&sr=1-1), a book that studies the methods of problem solving, by George Pólya and I fell in love with it. While most of the examples are about solving math problems, the mental operations taken apply just as well to practical problems. 

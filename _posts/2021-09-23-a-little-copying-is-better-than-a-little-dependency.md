@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'An example of "a little copying is better than a little dependency"'
+tagline: "We removed a huge dependency by duplicating 240 lines of code."
 tags: [programming]
 ---
 

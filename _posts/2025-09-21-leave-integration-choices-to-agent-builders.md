@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Leave integration choices to agent builders"
+tagline: "When LLM-based agents overlap in scope, vending full-blown agents creates more problems than it solves."
 tags: [llm]
 ---
 

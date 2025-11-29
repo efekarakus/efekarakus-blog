@@ -1,7 +1,9 @@
 ---
 layout: post
 title: 'Persuasion through collaboration'
+tagline: "Change minds in design reviews by restating their position, finding common ground, and asking genuine questions."
 tags: [career]
+favorite: true
 ---
 
 The goal of this blog post is to enumerate techniques, adapted from Ward Farnsworth’s [The Socratic Method [1]](https://www.amazon.com/Socratic-Method-Practitioners-Handbook/dp/1567926851) and Adam Grant’s [Think Again [2]](https://www.amazon.com/Think-Again-Power-Knowing-What/dp/1984878107), for effective feedback while reviewing technical writings such as a [RFCs](https://www.ietf.org/standards/rfcs/) or [PR-FAQs](https://youtu.be/aFdpBqmDpzM?feature=shared&t=570). By effective, I mean leading the author towards a better technical direction by moving the author’s mind without being adversarial about it. 

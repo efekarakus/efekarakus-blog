@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Client-side row versioning in DynamoDB
+tagline: "A pattern for maintaining record history in DynamoDB using two tables, one for current data and one for all versions."
 tags: [distributed systems, design, versioning, AWS, DynamoDB, NoSQL, databases]
 ---
 

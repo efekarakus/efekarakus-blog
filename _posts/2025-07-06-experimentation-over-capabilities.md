@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Experimentation over capabilities"
+tagline: "Building with LLMs means running experiments, not guaranteeing outcomes."
 tags: [llm]
 ---
 

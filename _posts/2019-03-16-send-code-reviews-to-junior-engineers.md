@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Send code reviews to junior engineers
+tagline: "Code reviews from less experienced engineers help you improve code clarity by exposing what's not obvious to readers unfamiliar with the codebase."
 tags: [code reviews]
 favorite: true
 ---

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What's worked for me for the past five years
+tagline: "Lessons from junior to senior at Amazon."
 tags: [career]
 ---
 

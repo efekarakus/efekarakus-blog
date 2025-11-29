@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Technical debt
+tagline: "Tech debt is principal plus interest: the cost to fix it, and how much it slows you down until you do."
 tags: [technical debt]
 favorite: true
 ---

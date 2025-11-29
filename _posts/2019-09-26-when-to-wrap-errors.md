@@ -1,6 +1,7 @@
 ---
 layout: post
 title: When to add context to errors
+tagline: "Wrap errors at public function boundaries, not at every internal call. Your error messages will be more concise without losing the information users actually need."
 categories: [golang]
 ---
 

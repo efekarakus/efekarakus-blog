@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "If it ain't broke, fix it?"
+tagline: "Code that works but confuses you is worth refactoring."
 tags: [programming, software]
 ---
 Can you spot what’s strange about the following CloudFormation snippet? 

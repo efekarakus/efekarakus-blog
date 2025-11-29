@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'Sweating the small stuff'
+tagline: "Dedicate at least one engineer to paper cuts and small features. They ship quickly, boost customer satisfaction, and give engineers a fast path to earn trust."
 tags: [planning]
 ---
 

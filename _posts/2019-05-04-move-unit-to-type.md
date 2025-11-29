@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Move a variable's unit to a type
+tagline: "Use custom types to encode units of measurement at compile time, making code more concise while preserving clarity."
 categories: [refactoring, golang]
 ---
 

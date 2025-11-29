@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A deep dive into the Go YAML library with CloudFormation
+tagline: "Learning about the internals of gopkg.in/yaml.v3"
 tags: [golang]
 redirect_from:
 - /posts/deep-dive-go-yaml-cfn

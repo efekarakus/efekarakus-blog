@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Exposing interfaces in Go
+tagline: "Best practices around Go interfaces but examining the standard library."
 categories: [golang]
 ---
 

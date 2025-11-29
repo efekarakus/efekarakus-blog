@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Choosing a new team
+tagline: "A questionnaire for evaluating teams based on growth, training, openness, pace, people, autonomy, and mastery to make an informed team choice."
 tags: [career]
 ---
 > Because we spend so much of our time at work, one of the most powerful leverage points for increasing our learning rate is our choice of work environment.  

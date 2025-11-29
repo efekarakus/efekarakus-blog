@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Transform function to method
+tagline: "Convert standalone functions into methods on types to improve extensibility and allow interfaces to define expected behavior."
 categories: [refactoring, golang]
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "On high level abstractions"
+tagline: "Good abstractions hide what's undesirable and expose what's powerful."
 tags: [design, programming]
 ---
 > When a low level of abstraction allows something to be done quickly, higher levels should not bury this power inside something more general. **The purpose of abstractions is to conceal _undesirable_ properties; desirable ones should not be hidden.** Sometimes, of course, an abstraction is multiplexing a resource, and this necessarily has some cost. But it should be possible to deliver all or nearly all of it to a single client with only slight loss of performance.  

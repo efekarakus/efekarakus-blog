@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Domain Knowledge vs. Technical Skill
+tagline: "Becoming a domain expert is as valuable as mastering technical skills, and often leads to naturally challenging technical problems."
 tags: [programming, self-improvement, domain driven design, career]
 ---
 > “Most talented developers do not have much interest in learning about the specific domain in which they are working, much less making a major commitment to expand their domain-modeling skills. Technical people enjoy quantifiable problems that exercise their technical skills. Domain work is messy and demands a lot of complicated new knowledge that doesn’t seem to add to a computer scientist’s capabilities.”

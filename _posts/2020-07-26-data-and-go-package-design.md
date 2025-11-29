@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Data and Go package design
+tagline: "Own your data types. Packages that expose external structs can't evolve without breaking changes, but owning your abstractions gives you room to grow."
 tags: [golang]
 ---
 > There are two important rules governing levels of abstractions. The first concerns resources (I/O devices, data): **each level has resources which it owns exclusively and which other levels are not permitted to access.**    

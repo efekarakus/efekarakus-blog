@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 'Do not assume ill intent'
+tagline: "That message that bothered me for two days? I should have assumed good intent, responded privately, and suggested better wording instead of defending publicly."
 tags: [career]
 ---
 

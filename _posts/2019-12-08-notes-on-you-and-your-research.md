@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Notes on "You and Your Research" by Hamming (1995)
+tagline: "Believe you can do great work, work on important problems, maintain excellence, and study your successes as carefully as your failures."
 ---
 
 These are my notes highlighting key points from [Richard Hamming](https://en.wikipedia.org/wiki/Richard_Hamming)’s [last lecture](https://www.youtube.com/watch?v=a1zDuOPkMSw) in a series titled “The Art of Doing Science and Engineering: Learning to Learn”. This lecture and the one on [creativity](https://www.youtube.com/watch?v=FlTybZvds0U) left a deep impression in me and I'd highly recommend watching them. I decided to write a digest as I find writing an effective way of letting lessons sink.

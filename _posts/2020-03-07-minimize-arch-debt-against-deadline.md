@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Minimizing architectural debt against a looming deadline
+tagline: "When deadlines force quick decisions, trust your most experienced teammate's judgment."
 tags: [technical debt]
 ---
 

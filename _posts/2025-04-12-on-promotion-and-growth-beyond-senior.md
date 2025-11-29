@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "On promotion and growth beyond senior"
+tagline: "Promotion beyond senior isn't about wisdom alone, focus on strategic work visibility."
 tags: [career]
+favorite: true
 ---
 
 As I progressed from a junior to senior software engineer within Amazon, I came to view leveling up as a function of wisdom - `f(wisdom)` - where as your applied or practical knowledge increased you were rewarded with a promotion. Therefore, when a peer got to level up to principal from senior engineer, my interpretation was that the organization valued my judgment less than my promoted peers, which made me deeply restless.
