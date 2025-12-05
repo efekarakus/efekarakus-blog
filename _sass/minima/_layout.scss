@@ -226,11 +226,39 @@
   }
 
   &.hidden {
-    display: none;
+    display: none !important;
+  }
+
+  &#more-posts-list.hidden {
+    display: none !important;
   }
 
   a {
     font-weight: bold;
+  }
+
+  // Mobile-specific styles
+  @include media-query($on-palm) {
+    > li {
+      .post-title-wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .post-meta {
+          order: -1;
+          margin-bottom: 2px;
+        }
+
+        .post-link {
+          display: block;
+        }
+      }
+
+      .favorite {
+        left: 0;
+        position: relative;
+      }
+    }
   }
 }
 
