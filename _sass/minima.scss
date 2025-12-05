@@ -10,15 +10,16 @@ $base-line-height: 1.5 !default;
 
 $spacing-unit:     50px !default;
 
+// Blackbird color scheme - elegant charcoals and grays on light background
 $text-color:       rgb(55, 53, 47) !default;
-$link-color: #0964B3;
-$code-color: #0964B3;
+$link-color: #374151;           // Deep charcoal gray - blackbird feathers
+$code-color: #4b5563;           // Slate gray for inline code
 $background-color: #ffffff !default;
-$brand-color:      rgb(55, 53, 47) !default;
+$brand-color:      #1f2937 !default;  // Darker charcoal for brand/headers
 
-$grey-color:       #828282 !default;
+$grey-color:       #6b7280 !default;
 $grey-color-light: lighten($grey-color, 40%) !default;
-$grey-color-dark:  darken($grey-color, 25%) !default;
+$grey-color-dark:  #1f2937 !default;
 
 $table-text-align: left !default;
 

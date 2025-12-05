@@ -5,8 +5,10 @@
   font-family: Menlo, monospace;
   font-size: 0.875rem;
   white-space: pre-wrap;
+  color: $code-color;
  }
 
 pre.highlight {
-  background-color: #f8f8f8;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
 }

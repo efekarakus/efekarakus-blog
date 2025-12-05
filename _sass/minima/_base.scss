@@ -187,7 +187,7 @@ h3,
 h4 {
   margin: 1.25rem 0 1.25rem;
   padding: 0;
-  color: #202224;
+  color: $brand-color;
 }
 
 h3,
@@ -214,14 +214,13 @@ h1 {
   */
 a {
   color: $link-color;
-  text-decoration: none;
+  text-decoration: underline;
 
   code {
     color: $code-color;
     text-decoration: underline;
   }
 
-  &.post-link,
   &.site-title,
   &.page-link {
     text-decoration: none;
@@ -240,13 +239,21 @@ a {
   }
 }
 
+.post-title a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 
 /**
   * Blockquotes
   */
 blockquote {
   color: $grey-color;
-  border-left: 2px solid $link-color;
+  border-left: 3px solid $brand-color;
   padding-left: $spacing-unit / 3;
   font-style: italic;
 
@@ -281,7 +288,7 @@ pre {
 /**
  * Spans
  */
-.highlight {
+.text-highlight {
   background-color: rgba(255, 255, 0, 0.3);
   padding: 0 0.1em;
   border-radius: 0.1em;
