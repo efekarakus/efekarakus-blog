@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Harness engineering rules of thumb"
+title: "Rules of thumb for harness engineering"
 tagline: "A few tenets I keep in mind while building agent harnesses that ride the model improvement curve."
 tags: [llm]
 ---
@@ -9,7 +9,7 @@ This blog post is for folks working on harness engineering. My intention is to w
 
 ### **1. Don't bring your intelligence as instructions**
 
-This is the most common feedback I give in code reviews. Frontier models like Claude Opus are smarter than you and I. The following guidance from Anthropic on authoring `CLAUDE.md` files and skills applies equally to the system prompt:
+This is the most common feedback I give in code reviews. Frontier models like Claude Opus are extremely capable. By and large, most instructions added to the system prompt or skills are unnecessary. The following guidance from Anthropic on authoring `CLAUDE.md` files and skills applies equally to the system prompt:
 
 > *Keep it concise. For each line, ask: "Would removing this cause Claude to make mistakes?" If not, cut it. Bloated CLAUDE.md files cause Claude to ignore your actual instructions!*
 > [Write an effective CLAUDE.md](https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md)
@@ -21,7 +21,9 @@ This is the most common feedback I give in code reviews. Frontier models like Cl
 > *- "Does this paragraph justify its token cost?"*
 > [Agent Skills Best Practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices#concise-is-key)
 
-<span class="text-highlight">The most common fallacy I see is adding new tools to an agent's harness and then asking a coding agent to write instructions on how to use those tools, or being overly prescriptive because one thinks they know better than the LLM.</span> In both cases, you're wasting tokens on guidance the model doesn't need. Don't regurgitate and don't over-specify: unless you can demonstrate that the LLM can't achieve its goal effectively without the instructions, leave them out.
+<span class="text-highlight">The most common anti-pattern I see is adding a new tool to an agent's harness and then asking a coding agent, like Kiro or Claude Code, to write instructions on how to use it.</span> That's just asking the LLM to regurgitate its own knowledge back as instructions. Remove them, you gain nothing.
+
+LLMs are really good at handling a *breadth* of problems while us humans are good at *depth*. Another common fallacy is thinking your expertise is necessary, and injecting specialized instructions into the context window. Hold off. First prove to yourself that the LLM isn't already capable of solving the problem, and only then add your workflows and specialized knowledge to supplement it. Otherwise, by adding instructions directly into the system prompt you might be overly confining the agent's ability to solve a wide range of problems. If you are confident that supplemental instructions are needed, progressive disclosure (like skills) is a great way of providing them: the primary system prompt remains lean and flexible, and specialization is introduced on demand depending on the task.
 
 Evaluate whether the agent *without any instructions* can effectively accomplish the task. If so, you're done.
 
@@ -32,11 +34,11 @@ The north star is a [system prompt like the Pi coding agent's](https://youtu.be/
 - Remove more instruction lines than you add.
 - Merge your instructions with an existing section to establish a more generic pattern.
 
-### **2. Instruct only the quirks**
+### **2. Instruct the quirks**
 
-Only add guidance when you can demonstrate that the LLM keeps making the same mistake over and over without it. Even then, add the most minimal and generic instructions to course-correct.
+A good category of supplemental instructions that's typically worthwhile is "gotchas" around tools. For example, Claude repeatedly uses `/i` as a syntax while querying CloudWatch Logs Insights. Telling the agent explicitly which syntaxes are not supported fits into a tool gotcha bucket. Instructions and examples for quirks like these are justified.
 
-For example, Claude repeatedly uses `/i` as a syntax while querying CloudWatch Logs Insights. Telling the agent explicitly which syntaxes are not supported fits into a "tool quirk" bucket. Instructions and examples for quirks like these are justified.
+Similarly, specialized workflows make sense once you can confidently demonstrate that the LLM is not yet good at solving a class of problems and your specialization is worthwhile encoding as instructions. Even then, add the most minimal and generic set of instructions to course-correct.
 
 ### **3. Expand capabilities, compress context**
 
@@ -44,7 +46,7 @@ Our primary work is to unlock the LLM's power by expanding its capabilities and 
 
 Add new tools that unlock new use cases for your agent. However, be careful about how many tools you add, your agent's [performance degrades](https://www.dbreunig.com/2025/06/26/how-to-fix-your-context.html#tool-loadout) the more you increase its cognitive load. Skills are a great way of expanding capability while keeping your system prompt lean: provide new capabilities as skills that the agent loads on demand.
 
-**[Progressive disclosure](https://agentskills.io/specification#progressive-disclosure).** Structure your tools so that the LLM can pull data progressively into its context window. For the DevOps Agent, if a tool result exceeds ~10k tokens, the agent returns a preview (~1k tokens) and the LLM can decide to apply additional filters, use a `distill` tool to have a fast LLM extract only the signal, or `read` and `grep` from the large result via a file system path. All of these reduce distracting tokens in the context window. Think hierarchically: tools that drill down on the necessary data progressively.
+**A mindset of [progressive disclosure](https://agentskills.io/specification#progressive-disclosure).** Provide decision points for the LLM to decide if it'd like to pull in additional context into its context window. This applies to both instructions (skills loaded on demand) and tools. For the DevOps Agent, if a tool result exceeds ~10k tokens, the agent returns a preview (~1k tokens) and the LLM can decide to apply additional filters, use a `distill` tool to have a fast LLM extract only the signal, or `read` and `grep` from the large result via a file system path. All of these reduce distracting tokens in the context window. Think hierarchically: tools that drill down on the necessary data progressively.
 
 **Lean into training and tuning.** Create flexible tool interfaces that leverage what the LLM was trained with. For example, rather than having separate individual tools to interact with the Kubernetes API, if you can just use `kubectl` directly that's ideal. Otherwise, a tool that closely matches the `kubectl` interface will be closest to what the LLM is trained with *and* more flexible by reducing the number of tools in the context window. If you see a pair of tools always used together, consider merging them.
 
