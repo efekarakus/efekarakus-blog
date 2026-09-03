@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A retrospective on quality and productivity with coding agents"
+title: "A retrospective on productivity and (lack?) of quality with coding agents"
 tagline: "Can we actually eliminate code reviews?"
 tags: [agents, engineering]
 ---
@@ -47,7 +47,7 @@ In conclusion, to produce high quality software, we need to (i) have a sound the
 
 ## The north star
 
-My favorite article on how to concretely achieve both high quality and productivity is by David Crawshaw. Here are my favorite quotes and highlights that had me nodding along:
+The recipe outlined in the article below resonated strongly with my own successful experience of building good software while benefiting from the productivity boost of agents:
 
 > _Small <span class="text-highlight">high-trust</span> teams have an easy process they can adopt:_
 > 1. _A human instructs a machine to make a change._
@@ -58,33 +58,30 @@ My favorite article on how to concretely achieve both high quality and productiv
 > _Anecdotal evidence suggests this works for <span class="text-highlight">small teams</span>. With a team of nine at [exe.dev](https://exe.dev) we have been able to make it work. We spend a lot more time writing integration tests, e2e tests, building agent-based workflows for analyzing commits for safety or performance or usability bugs to minimize risk. [...] <span class="text-highlight">We also have had to be very selective about our colleagues and be intentional in our communication</span>. But we ship this way._  
 > – [The agent principal-agent problem](https://crawshaw.io/blog/agent-principal-agent)
 
-He does not pitch to eliminate human review entirely. Instead, eliminate the need for a second human to review each change, while keeping responsibility with the person prompting the agent. This recipe perfectly echoes my own past experiences where both high quality and productivity were achieved with coding agents.
+He does not pitch to eliminate human review entirely. Instead, we eliminate the need for a second human to review each change, while keeping responsibility with the person prompting the agent.
 
-Fundamentally, there was **trust** among all the peers contributing to the codebase. That trust came from the same three ingredients of quality: all of us had the same theory because we built the software from the ground up, developed similar taste after working together for about five years, and practiced design-led feature development.
+Fundamentally, there needs to be **trust** among all the peers contributing to the codebase. Once we have earned each other’s trust, we no longer need to read each other’s low-level code. I trust that you did the due diligence and that whatever is being merged fits our shared definition of quality. Go ahead and merge it! Design reviews are how we sync, while reviewing our own code helps maintain both its quality and our individual theories of the program.
 
-When we have earned each other’s trust, we no longer need to read each other’s low-level code. I trust that you did the due diligence and that whatever is being merged fits our shared definition of good. Go ahead and merge it! Design reviews are how we stay in sync with each other and self code reviews continues to maintain the theory of the program.
-
-Of course, as quoted above, we should invest along the way in our context files, skills, lint checks, unit tests, integration tests, [QA tests](https://antirez.com/news/168), etc. However, all these mechanisms will inevitably be incomplete. At the bottommost layer, we still need to trust each other.
+Of course, as quoted above, we should invest along the way in mechanisms to enforce quality: context files, skills, linting, unit tests, integration tests, [QA tests](https://antirez.com/news/168), etc. However, all these mechanisms will inevitably be incomplete. At the bottommost layer, we still need to trust each other.
 
 ## Challenge of large organizations
 
-A month ago, I joined a new team. Nobody should trust me yet to yolo merge changes because I do not have a good theory of the program. I need code reviews from peers who have a much better understanding of how the program maps to the real world and why it is structured the way it is.
+A month ago, I joined a new team. Nobody should trust me yet to yolo merge changes because I do not have a good theory of the program. I need code reviews from teammates who have a much better understanding of how the program maps to the real world and why it is structured the way it is.
 
 > _This is not tenable in low-trust environments, i.e. large companies. You have to trust your co-workers to start a conversation about architectural changes before they do it. No-one at BigCo trusts their colleagues to make sweeping changes to a service they "own"._  
 > – [The agent principal-agent problem](https://crawshaw.io/blog/agent-principal-agent)
 
-To create high-quality software, you need a solid theory, taste, and designs.  
-To go fast, you need trust amongst contributors.
+To create high quality software, you need a solid theory, taste, and designs.  
+To go fast, you need trust amongst contributors.  
+Trust is earned by demonstrating repeatedly we share the same definition of quality.
 
-In my opinion, this is also why any management approach that assumes coding agents let anyone contribute to any team's codebase is doomed to produce a low-quality product.
+In my opinion, any management approach that assumes coding agents enable anyone to contribute effectively to any team’s codebase is doomed to produce low-quality software. Engineers within a team are at different stages in developing both their taste and their theory of the program, while those outside the team face an even wider gap in sharing that theory.
 
-My suggestions are as follows for those of us working at BigCo:
-1. Ground your changes in a design that the team you're contributing to is aligned on. 
+We can achieve this dream state, even at BigCo! We just need to return to the fundamentals of good software engineering while trust is being earned.
+1. Architectural changes and features need to have a design review upfront.
 2. Keep your pull-requests small while you're trying to earn trust. A human still needs to review them.
-3. Self-review your own changes first. Truly read the bulk of the generated code, steer your agent, and add the necessary harness changes to fix the code generation long term. 
+3. Review your own changes first. We must shift the balance of effort back toward the author rather than the reviewer. This is the end state we need to reach anyway. Carefully read the exposed interfaces, tests, and critical paths in the generated code. Comment on the code review and have your agent iterate, and contribute the necessary harness mechanisms to improve future code generation for everyone.
 
-Eventually, all peers on the team should trust each other and we can actually go fast.
-
-In addition, I think eventually any coding harness that manages to create a truly _shared memory_ that builds a solid theory of the program over multiple sessions and across contributors will unlock tremendous productivity with quality, where anyone with no good theory of the program of their own should be able to effectively contribute.
+Looking further ahead, I think a coding harness capable of creating and maintaining a truly _shared memory_ across sessions and contributors will eventually unlock tremendous productivity without sacrificing quality. Such a harness should be able to recognize and explain when a feature request does not fit the product, understand how the codebase should evolve, and make changes consistent with that direction. Until then, I’ll keep reviewing the code my agents generate to maintain quality.
 
 [^1]: I work at a very large tech company.
