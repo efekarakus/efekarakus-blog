@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "A retrospective on productivity and (lack?) of quality with coding agents"
-tagline: "Can we actually eliminate code reviews?"
+tagline: "Can we really eliminate code reviews?"
 tags: [agents, engineering]
 ---
 
@@ -75,7 +75,7 @@ To create high quality software, you need a solid theory, taste, and designs.
 To go fast, you need trust amongst contributors.  
 Trust is earned by demonstrating repeatedly we share the same definition of quality.
 
-In my opinion, any management approach that assumes coding agents enable anyone to contribute effectively to any team’s codebase is doomed to produce low-quality software. Engineers within a team are at different stages in developing both their taste and their theory of the program, while those outside the team face an even wider gap in sharing that theory.
+In my opinion, any management approach that assumes coding agents enable anyone to contribute effectively to any team’s codebase is doomed to produce low-quality software. Engineers within a team at BigCo are at different stages in developing both their taste and their theory of the program, while those outside the team face an even wider gap in sharing that theory.
 
 We can achieve this dream state, even at BigCo! We just need to return to the fundamentals of good software engineering while trust is being earned.
 1. Architectural changes and features need to have a design review upfront.
