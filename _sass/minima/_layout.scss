@@ -225,14 +225,6 @@
     }
   }
 
-  &.hidden {
-    display: none !important;
-  }
-
-  &#more-posts-list.hidden {
-    display: none !important;
-  }
-
   a {
     font-weight: bold;
   }
@@ -276,23 +268,6 @@
 .post-link {
   display: inline;
   //@include relative-font-size(1.5);
-}
-
-.more-articles {
-  margin-top: $spacing-unit;
-  margin-bottom: $spacing-unit / 2;
-
-  a {
-    color: $link-color;
-    text-decoration: none;
-    font-size: $base-font-size;
-    font-weight: bold;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 
